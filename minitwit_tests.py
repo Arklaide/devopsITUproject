@@ -67,7 +67,7 @@ class MiniTwitTestCase(unittest.TestCase):
         """Make sure registering works"""
         rv = self.register('user1', 'default')
         assert b'You were successfully registered ' \
-                b'and can login now' in rv.data
+               b'and can login now' in rv.data
         rv = self.register('user1', 'default')
         assert b'The username is already taken' in rv.data
         rv = self.register('', 'default')
