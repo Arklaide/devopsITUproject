@@ -10,7 +10,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").AddEnvironmentVariables().Build();
 builder.Services.AddDbContextFactory<DatabaseContext>(options =>
 {
     options.UseNpgsql(config.GetConnectionString("myDb1"));
