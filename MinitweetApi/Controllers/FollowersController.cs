@@ -21,61 +21,26 @@ namespace MinitweetApi.Controllers
             _context = context;
         }
 
-        // GET: api/Followers/5
-        [HttpGet("fllws")]
-        public async Task<ActionResult<Follower>> GetFollower(string whousername, string whomusername)
+        [HttpPost("{who_id}/unfollow")]
+        public async void unfollow(int who_id, int whom_id)
         {
-            var follower = await _context.Follower.FindAsync();
-
-            if (follower == null)
-            {
-                return NotFound();
-            }
-
-            return follower;
+            var follow = _context.Follower.Where(u => u.who_id == u.who_id && u.whom_id == whom_id).FirstOrDefault();
+            _context.Remove(follow);
+            _context.SaveChanges();
         }
 
-        // GET: api/Followers/5
-        [HttpGet("fllws/{username}")]
-        public async Task<ActionResult<Follower>> GetFollowerByUser(string username)
+        [HttpPost("{who_id}/follow")]
+        public async void follow(int who_id, int whom_id)
         {
-            var user = await _context.User.Where(e => e.username == username).SingleOrDefaultAsync();
-
-            var follower = await _context.Follower.FindAsync();
-
-            if (follower == null)
+            var follower = new Follower
             {
-                return NotFound();
-            }
-
-            return follower;
+                who_id = who_id,
+                whom_id = whom_id
+            };
+            _context.Add(follower);
+            _context.SaveChanges();
         }
 
-
-        // POST: api/Followers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("fllws/{username}")]
-        public async Task<ActionResult<Follower>> PostFollower(string username,Follower follower)
-        {
-            _context.Follower.Add(follower);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (FollowerExists(follower.who_id))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return CreatedAtAction("GetFollower", new { id = follower.who_id }, follower);
-        }
 
 
         private bool FollowerExists(int id)

@@ -21,90 +21,45 @@ namespace MInitweetApi.Controllers
             _context = context;
         }
 
-        // GET: api/Users
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<User>>> GetUser()
+        [HttpPost("add_message")]
+        public async void add_message(int author_id, string text)
         {
-            return await _context.User.ToListAsync();
-        }
-
-        // GET: api/Users/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUser(int id)
-        {
-            var user = await _context.User.FindAsync(id);
-
-            if (user == null)
+            TimeSpan t = (DateTime.UtcNow - new DateTime(1970, 1, 1));
+            int timestamp = (int)t.TotalSeconds;
+            var message = new Message
             {
-                return NotFound();
-            }
-
-            return user;
+                author_id = author_id,
+                text = text,
+                pub_date = timestamp,
+                flagged = 0
+            };
+            _context.Add(message);
+            _context.SaveChanges();
         }
 
-        // PUT: api/Users/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutUser(int id, User user)
+        [HttpPost("register")]
+        public async void register(string username, string email, string password, string password2)
         {
-            if (id != user.user_Id)
+            var user = new User
             {
-                return BadRequest();
-            }
-
-            _context.Entry(user).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!UserExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
+                username = username,
+                email = email,
+                pw_hash = password
+            };
+            _context.Add(user);
+            _context.SaveChanges();
         }
 
-        // POST: api/Users
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<User>> PostUser(User user)
+        [HttpGet("login")]
+        public async Task<ActionResult<User>> login(string username)
         {
-            _context.User.Add(user);
-            await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetUser", new { id = user.user_Id }, user);
-        }
-
-        // DELETE: api/Users/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
-        {
-            var user = await _context.User.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-
-            _context.User.Remove(user);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
+            var user = _context.User.Where(u => u.username == username).FirstOrDefault();
+            return user; 
         }
 
 
 
-        private bool UserExists(int id)
-        {
-            return _context.User.Any(e => e.user_Id == id);
-        }
+
     }
 }
