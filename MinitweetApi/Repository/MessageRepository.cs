@@ -4,6 +4,11 @@ public class MessageRepository : IMessageRepository
 {
     private readonly DatabaseContext _context;
 
+    public MessageRepository(DatabaseContext context)
+    {
+        _context = context;
+    }
+
     public IEnumerable<Message> getLoggedInUserTimeline(int id)
     {
         throw new NotImplementedException();
@@ -31,7 +36,7 @@ public class MessageRepository : IMessageRepository
             author_id = user.user_Id,
             flagged = false,
             text = message,
-            pub_date = DateTime.Now
+            pub_date = DateTime.UtcNow
         };
         _context.Message.Add(msg);
         _context.SaveChanges();

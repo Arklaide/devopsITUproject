@@ -5,6 +5,11 @@ public class UserRepository : IUserRepository
 
     private readonly DatabaseContext _context;
 
+    public UserRepository(DatabaseContext context)
+    {
+        _context = context;
+    }
+
     public int login(User user)
     {
         var current = _context.User.Where(u => u.username == user.username).FirstOrDefault();

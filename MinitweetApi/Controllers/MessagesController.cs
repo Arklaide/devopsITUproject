@@ -20,7 +20,7 @@ namespace MInitweetApi.Controllers
         public MessagesController(DatabaseContext context, IMessageRepository messageRepository)
         {
             _context = context;
-            _messageRepository = messageRepository;
+                _messageRepository = messageRepository;
         }
 
         [HttpGet]
