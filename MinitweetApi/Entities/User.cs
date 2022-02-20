@@ -10,7 +10,6 @@ namespace MInitweetApi.Models
         public string email { get; set; }
         public string pw_hash { get; set; }
 
-        public List<Follower> followers { get; set; }
         public List<Message> messages { get; set; }
 
     }

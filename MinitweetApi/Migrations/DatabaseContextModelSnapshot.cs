@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MInitweetApi.Migrations
+namespace MinitweetApi.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
     partial class DatabaseContextModelSnapshot : ModelSnapshot
@@ -24,11 +24,9 @@ namespace MInitweetApi.Migrations
 
             modelBuilder.Entity("MInitweetApi.Models.Follower", b =>
                 {
-                    b.Property<int>("who_id")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("whom_id")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("who_id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<int>("who_useruser_Id")
                         .HasColumnType("integer");
@@ -36,7 +34,7 @@ namespace MInitweetApi.Migrations
                     b.Property<int>("whom_useruser_Id")
                         .HasColumnType("integer");
 
-                    b.HasKey("who_id", "whom_id");
+                    b.HasKey("who_id");
 
                     b.HasIndex("who_useruser_Id");
 
@@ -56,8 +54,8 @@ namespace MInitweetApi.Migrations
                     b.Property<int>("author_id")
                         .HasColumnType("integer");
 
-                    b.Property<int>("flagged")
-                        .HasColumnType("integer");
+                    b.Property<bool>("flagged")
+                        .HasColumnType("boolean");
 
                     b.Property<DateTime>("pub_date")
                         .HasColumnType("timestamp with time zone");
@@ -66,14 +64,12 @@ namespace MInitweetApi.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("user_Id1")
+                    b.Property<int>("user_Id")
                         .HasColumnType("integer");
 
                     b.HasKey("message_Id");
 
-                    b.HasIndex("author_id");
-
-                    b.HasIndex("user_Id1");
+                    b.HasIndex("user_Id");
 
                     b.ToTable("Message");
                 });
@@ -100,18 +96,15 @@ namespace MInitweetApi.Migrations
 
                     b.HasKey("user_Id");
 
-                    b.HasIndex("username")
-                        .IsUnique();
-
                     b.ToTable("User");
                 });
 
             modelBuilder.Entity("MInitweetApi.Models.Follower", b =>
                 {
                     b.HasOne("MInitweetApi.Models.User", "who_user")
-                        .WithMany("followers")
+                        .WithMany()
                         .HasForeignKey("who_useruser_Id")
-                        .OnDelete(DeleteBehavior.ClientCascade)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MInitweetApi.Models.User", "whom_user")
@@ -128,22 +121,16 @@ namespace MInitweetApi.Migrations
             modelBuilder.Entity("MInitweetApi.Models.Message", b =>
                 {
                     b.HasOne("MInitweetApi.Models.User", "user")
-                        .WithMany()
-                        .HasForeignKey("author_id")
+                        .WithMany("messages")
+                        .HasForeignKey("user_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.HasOne("MInitweetApi.Models.User", null)
-                        .WithMany("messages")
-                        .HasForeignKey("user_Id1");
 
                     b.Navigation("user");
                 });
 
             modelBuilder.Entity("MInitweetApi.Models.User", b =>
                 {
-                    b.Navigation("followers");
-
                     b.Navigation("messages");
                 });
 #pragma warning restore 612, 618

@@ -10,20 +10,47 @@ using MInitweetApi.Models;
 
 namespace MInitweetApi.Controllers
 {
+    [Route("/")]
     [ApiController]
-    [Route("")]
     public class MessagesController : ControllerBase
     {
         private readonly DatabaseContext _context;
+        private readonly IMessageRepository _messageRepository;
 
-        public MessagesController(DatabaseContext context)
+        public MessagesController(DatabaseContext context, IMessageRepository messageRepository)
         {
             _context = context;
+            _messageRepository = messageRepository;
         }
 
-        private bool MessageExists(int id)
+        [HttpGet]
+        [Route("/")]
+        public async Task<IActionResult> PublicTimeline()
         {
-            return _context.Message.Any(e => e.message_Id == id);
+            return new OkObjectResult(_messageRepository.getPublicTimeline());
+        }
+
+        [HttpGet]
+        [Route("{username}")]
+        public async Task<IActionResult> UserTimeline(string username)
+        {
+            return new OkObjectResult(_messageRepository.GetUserTimeline(username));
+        }
+        
+        [HttpPost]
+        [Route("msgs/{username}")]
+        public async Task<IActionResult> addMessage(string text, string username)
+        {
+            _messageRepository.newMessage(username, text);
+            return NoContent();
+        }
+
+
+        [HttpGet]
+        [Route("msgs/{username}")]
+        public async Task<IActionResult> getMessages(string username)
+        {
+            return new OkObjectResult(_messageRepository.GetUserTimeline(username));
         }
     }
 }
