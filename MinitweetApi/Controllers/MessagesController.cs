@@ -39,9 +39,9 @@ namespace MInitweetApi.Controllers
         
         [HttpPost]
         [Route("msgs/{username}")]
-        public async Task<IActionResult> addMessage(string text, string username)
+        public async Task<IActionResult> addMessage([FromBody] Stringwrapper sw, string username)
         {
-            _messageRepository.newMessage(username, text);
+            _messageRepository.newMessage(username, sw.text);
             return NoContent();
         }
 
@@ -52,5 +52,10 @@ namespace MInitweetApi.Controllers
         {
             return new OkObjectResult(_messageRepository.GetUserTimeline(username));
         }
+        public class Stringwrapper
+        {
+            public string text { get; set; }
+        }
+
     }
 }
