@@ -24,7 +24,7 @@ namespace MInitweetApi.Controllers
         }
 
         [HttpGet]
-        [Route("/")]
+        [Route("/public")]
         public async Task<IActionResult> PublicTimeline()
         {
             return new OkObjectResult(_messageRepository.getPublicTimeline());
