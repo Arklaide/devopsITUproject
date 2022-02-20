@@ -1,6 +1,23 @@
 ﻿@page "/public-timeline"
 @inherits PublicTimelineBase
 
-<h1>Public Timeline</h1>
+<h1 style="font-size: 28px; margin-bottom: 20px;">Public Timeline</h1>
+
+@foreach (var twit in twits)
+{ 
+<div class="twit-container">
+    <div class="twit-pic-container">
+        //image
+    </div>
+    <div class="name-date-container">
+        <div class="name-twit-displayed">
+            <b> <u>> @twit.Name </u> </b> @twit.Twit
+        </div>
+        <div class="date">
+            @twit.Date
+        </div>
+    </div>
+</div>
+}
 
 
