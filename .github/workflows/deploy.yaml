@@ -25,18 +25,18 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           host: "68.183.67.47"
-          KEY: ${{ secrets.SSHKEY }}
+          key: ${{ secrets.SSHKEY }}
           script: docker pull registry.digitalocean.com/devopsitu/minitwitapi:latest
           runs-on: ubuntu-latest
       - name: Docker stop all
         uses: appleboy/ssh-action@master
         with:
           host: "68.183.67.47"
-          KEY: ${{ secrets.SSHKEY }}
+          key: ${{ secrets.SSHKEY }}
           script: docker stop $(docker ps -q)
       - name: Docker run
         uses: appleboy/ssh-action@master
         with:
           host: "68.183.67.47"
-          KEY: ${{ secrets.SSHKEY }}
+          key: ${{ secrets.SSHKEY }}
           script: docker run -d -p 8000:80 --name minitwitapi registry.digitalocean.com/devopsitu/minitwitapi:latest
