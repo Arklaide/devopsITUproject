@@ -35,6 +35,13 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           script: docker stop $(docker ps -q)
+      - name: Docker remove all
+        uses: appleboy/ssh-action@master
+        with:
+          host: "68.183.67.47"
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: docker rm $(docker ps -a -q)
       - name: Docker run
         uses: appleboy/ssh-action@master
         with:
