@@ -1,11 +1,4 @@
-﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using MInitweetApi.Models;
 
 namespace MInitweetApi.Controllers
@@ -41,7 +34,7 @@ namespace MInitweetApi.Controllers
         [Route("msgs/{username}")]
         public async Task<IActionResult> addMessage([FromBody] Stringwrapper sw, string username)
         {
-            _messageRepository.newMessage(username, sw.text);
+            _messageRepository.newMessage(username, sw.content);
             return NoContent();
         }
 
@@ -54,7 +47,7 @@ namespace MInitweetApi.Controllers
         }
         public class Stringwrapper
         {
-            public string text { get; set; }
+            public string content { get; set; }
         }
 
     }

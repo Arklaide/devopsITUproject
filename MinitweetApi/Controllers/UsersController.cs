@@ -1,11 +1,5 @@
 ﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using MInitweetApi.Models;
 
 namespace MInitweetApi.Controllers
@@ -31,13 +25,13 @@ namespace MInitweetApi.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult> register(string username, string email, string password, string password2)
+        public async Task<ActionResult> register([FromBody] Userdto u)
         {
             var user = new User
             {
-                username = username,
-                email = email,
-                pw_hash = password
+                username = u.username,
+                email = u.email,
+                pw_hash = u.pwd
             };
             _context.Add(user);
             _context.SaveChanges();
@@ -53,7 +47,14 @@ namespace MInitweetApi.Controllers
         }
 
 
+        public class Userdto
+        {
+            public string username { get; set; }
+            public string email { get; set; }
+            public string pwd { get; set; }
 
+
+        }
 
     }
 }

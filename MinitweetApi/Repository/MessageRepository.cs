@@ -9,20 +9,21 @@ public class MessageRepository : IMessageRepository
         _context = context;
     }
 
-    public IEnumerable<Message> getLoggedInUserTimeline(int id)
+    public async 
+        Task<IEnumerable<Message>> getLoggedInUserTimeline(int id)
     {
         throw new NotImplementedException();
     }
 
-    public IEnumerable<Message> getPublicTimeline()
+    public async Task<IEnumerable<Message>> getPublicTimeline()
     {
         var messages = _context.Message.Where(u => !u.flagged);
         return messages;
     }
 
-    public IEnumerable<Message> GetUserTimeline(string username)
+    public async Task<IEnumerable<Message>> GetUserTimeline(string username)
     {
-        var m = _context.Message.Where(u => u.user.username == username).ToList();
+        var m =  _context.Message.Where(u => u.user.username == username).ToList();
         return m;
     }
 

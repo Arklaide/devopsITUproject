@@ -49,7 +49,12 @@ public class UserRepository : IUserRepository
         }
         var follower = _context.User.Where(u => u.username == follow).FirstOrDefault();
         var newf = new Follower { who_user = currentuser, whom_user = follower };
-        _context.Add(follower);
+        _context.Add(newf);
         _context.SaveChanges();
+    }
+
+    public string getUsername(int id)
+    {
+        return _context.User.Where(u => u.user_Id == id).FirstOrDefault().username;
     }
 }

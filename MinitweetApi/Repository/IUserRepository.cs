@@ -5,4 +5,5 @@ public interface IUserRepository{
     void unfollow(string username, string unfollow);
     int registerUser(User user);
     int login(User user);
+    string getUsername(int id);
 }
