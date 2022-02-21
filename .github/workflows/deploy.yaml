@@ -21,9 +21,6 @@ jobs:
           context: "{{defaultContext}}:MinitweetApi"
           push: true
           tags: registry.digitalocean.com/devopsitu/minitwitapi:latest
-  pull_to_droplet:
-    runs-on: ubuntu-latest
-    steps:
       - name: Docker pull
         uses: appleboy/ssh-action@master
         with:
