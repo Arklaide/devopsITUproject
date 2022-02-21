@@ -34,14 +34,14 @@ jobs:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: docker stop $(docker ps -q)
+          script: docker stop $(docker ps -q) || true
       - name: Docker remove all
         uses: appleboy/ssh-action@master
         with:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: docker rm $(docker ps -a -q)
+          script: docker rm $(docker ps -a -q) || true
       - name: Docker run
         uses: appleboy/ssh-action@master
         with:
