@@ -1,0 +1,29 @@
+﻿@inherits NavMenuBase
+
+
+<div class="top-row pl-4 navbar navbar-dark">
+    <a class="navbar-brand" href="">Minitwit</a>
+    <button class="navbar-toggler" @onclick="ToggleNavMenu">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <ul class="nav flex-column">
+        @if (LoginState.isAuthenticated) {
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
+                <span class="oi oi-home" aria-hidden="true"></span> My Timeline
+            </NavLink>
+        </li>
+        }
+        <li class="nav-item px-3">
+            <NavLink class="nav-link" href="public-timeline">
+                <span class="oi oi-plus" aria-hidden="true"></span> Public Timeline
+            </NavLink>
+        </li>
+
+    </ul>
+</div>
+
+
