@@ -18,27 +18,24 @@ namespace MinitweetApi.Controllers
             _userRepository = userRepository;
         }
 
-
         [HttpPost]
         [Route("fllws/{username}")]
-        public async Task<IActionResult> fllws([FromBody] FollowDTO fd, string username)
+        public async Task<IActionResult> fllws(string username, [FromBodyAttribute] FllwDTO fllwDto)
         {
-
-            _userRepository.follows(username, fd.follow);
+            if (fllwDto.follow != string.Empty) 
+                _userRepository.Follow(username, fllwDto.follow);
+            else if (fllwDto.unfollow != string.Empty)
+                _userRepository.Unfollow(username, fllwDto.unfollow);
+            else
+                return BadRequest();
+            
             return new OkResult();
         }
 
-        
-
-
-
-        public class FollowDTO
+        public class FllwDTO
         {
-            public string follow { get; set; }
-        }
-        public class UnFollowDTO
-        {
-            public string unfollow { get; set; }
+            public string? follow { get; set; }
+            public string? unfollow { get; set; }
         }
     }
 }

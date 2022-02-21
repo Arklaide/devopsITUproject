@@ -30,26 +30,31 @@ public class UserRepository : IUserRepository
         return newuser.user_Id;
     }
 
-    public void unfollow(string username, string unfollow)
+    public void Unfollow(string username, string unfollow)
     {
-        var currentuser = _context.User.Where(u => u.username == username).FirstOrDefault();
-        var follower = _context.User.Where(u => u.username == unfollow).FirstOrDefault();
+        var currentuser = _context.User.FirstOrDefault(u => u.username == username);
+        var follower = _context.User.FirstOrDefault(u => u.username == unfollow);
 
-        var followers = _context.Follower.FirstOrDefault(u => u.whom_user.username == username && u.whom_user.username == unfollow);
-        _ = _context.Follower.Remove(followers);
-        _context.SaveChanges();
+        Follower? follow = _context.Follower.FirstOrDefault(u => u.who_user.username == username && u.whom_user.username == unfollow);
+        if (follow != null)
+        {
+            _context.Follower.Remove(follow);
+            _context.SaveChanges();
+        }
     }
 
-    public void follows(string username, string follow)
+    public void Follow(string username, string follow)
     {
         var currentuser = _context.User.Where(u => u.username == username).FirstOrDefault();
         if (currentuser == null)
         {
+            Console.WriteLine("could not find " + username);
             throw new Exception();
         }
-        var follower = _context.User.Where(u => u.username == follow).FirstOrDefault();
-        var newf = new Follower { who_user = currentuser, whom_user = follower };
-        _context.Add(newf);
+        var whom_user = _context.User.FirstOrDefault(u => u.username == follow);
+        if (whom_user == null) return;
+        var follower = new Follower { who_user = currentuser, whom_user = whom_user };
+        _context.Add(follower);
         _context.SaveChanges();
     }
 
