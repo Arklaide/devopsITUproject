@@ -30,7 +30,7 @@ public class UserRepository : IUserRepository
         return newuser.user_Id;
     }
 
-    public void Unfollow(string username, string unfollow)
+    public bool Unfollow(string username, string unfollow)
     {
         var currentuser = _context.User.FirstOrDefault(u => u.username == username);
         var follower = _context.User.FirstOrDefault(u => u.username == unfollow);
@@ -40,22 +40,25 @@ public class UserRepository : IUserRepository
         {
             _context.Follower.Remove(follow);
             _context.SaveChanges();
+            return true;
         }
+        return false;
     }
 
-    public void Follow(string username, string follow)
+    public bool Follow(string username, string follow)
     {
         var currentuser = _context.User.Where(u => u.username == username).FirstOrDefault();
         if (currentuser == null)
         {
             Console.WriteLine("could not find " + username);
-            throw new Exception();
+            return false;
         }
         var whom_user = _context.User.FirstOrDefault(u => u.username == follow);
-        if (whom_user == null) return;
+        if (whom_user == null) return false;
         var follower = new Follower { who_user = currentuser, whom_user = whom_user };
         _context.Add(follower);
         _context.SaveChanges();
+        return true;
     }
 
     public string getUsername(int id)

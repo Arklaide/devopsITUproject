@@ -22,14 +22,26 @@ namespace MinitweetApi.Controllers
         [Route("fllws/{username}")]
         public async Task<IActionResult> fllws(string username, [FromBodyAttribute] FllwDTO fllwDto)
         {
-            if (fllwDto.follow != string.Empty) 
-                _userRepository.Follow(username, fllwDto.follow);
+            if (fllwDto.follow != string.Empty)
+            {
+
+                if (!_userRepository.Follow(username, fllwDto.follow))
+                {
+                    return NotFound();
+                }
+            }
             else if (fllwDto.unfollow != string.Empty)
-                _userRepository.Unfollow(username, fllwDto.unfollow);
+            {
+
+                if (_userRepository.Unfollow(username, fllwDto.unfollow))
+                {
+                    return NoContent();
+                }
+            }
             else
                 return BadRequest();
-            
-            return new OkResult();
+
+            return NoContent();
         }
 
         public class FllwDTO
