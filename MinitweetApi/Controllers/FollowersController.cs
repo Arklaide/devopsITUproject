@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MInitweetApi.Models;
-using Newtonsoft.Json.Linq;
 
 namespace MinitweetApi.Controllers
 {
@@ -35,11 +34,11 @@ namespace MinitweetApi.Controllers
 
                 if (!_userRepository.Unfollow(username, fllwDto.unfollow))
                 {
-                    return NoContent();
+                    return NotFound();
                 }
             }
             else
-                return BadRequest();
+                return StatusCode(403);
 
             return NoContent();
         }
