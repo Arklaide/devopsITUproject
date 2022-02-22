@@ -10,38 +10,48 @@ namespace MinitweetApi.Controllers
     {
         private readonly DatabaseContext _context;
         private readonly IUserRepository _userRepository;
+        private readonly IUtilityRepository _utilityRepository;
 
 
-        public FollowersController(DatabaseContext context, IUserRepository userRepository)
+        public FollowersController(DatabaseContext context, IUserRepository userRepository, IUtilityRepository utilityRepository)
         {
             _context = context;
             _userRepository = userRepository;
+            _utilityRepository = utilityRepository;
         }
 
         [HttpPost]
         [Route("fllws/{username}")]
-        public async Task<IActionResult> fllws(string username, [FromBodyAttribute] FllwDTO fllwDto)
+        public async Task<IActionResult> fllws(int latest, [FromRoute] string username, [FromBodyAttribute] FllwDTO fllwDto)
         {
-            if (string.IsNullOrEmpty(fllwDto.unfollow))
+            try
             {
-
-                if (!_userRepository.Follow(username, fllwDto.follow))
+                if (string.IsNullOrEmpty(fllwDto.unfollow))
                 {
-                    return NotFound();
+
+                    if (!_userRepository.Follow(username, fllwDto.follow))
+                    {
+                        return NotFound();
+                    }
                 }
+                else if (string.IsNullOrEmpty(fllwDto.follow))
+                {
+
+                    if (!_userRepository.Unfollow(username, fllwDto.unfollow))
+                    {
+                        return NoContent();
+                    }
+                }
+                else
+                    return BadRequest();
+
+                return NoContent();
             }
-            else if (string.IsNullOrEmpty(fllwDto.follow))
+            finally
             {
-
-                if (!_userRepository.Unfollow(username, fllwDto.unfollow))
-                {
-                    return NoContent();
-                }
+                _utilityRepository.PutLatest(latest);
             }
-            else
-                return BadRequest();
-
-            return NoContent();
+            
         }
 
         public class FllwDTO

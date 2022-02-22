@@ -13,6 +13,7 @@ namespace MInitweetApi.Models
         public DbSet<Message> Message { get; set; }
         public DbSet<Follower> Follower { get; set; }
         public DbSet<User> User { get; set; }
+        public DbSet<Utility> Utility { get; set; }
 
 
 
