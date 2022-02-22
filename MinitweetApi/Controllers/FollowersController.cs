@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MInitweetApi.Models;
-using Newtonsoft.Json.Linq;
 
 namespace MinitweetApi.Controllers
 {
