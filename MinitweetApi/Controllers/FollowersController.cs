@@ -36,10 +36,10 @@ namespace MinitweetApi.Controllers
                 {
                     return NotFound();
                 }
+            } else
+            {
+                return StatusCode(404);
             }
-            else
-                return StatusCode(403);
-
             return NoContent();
         }
 

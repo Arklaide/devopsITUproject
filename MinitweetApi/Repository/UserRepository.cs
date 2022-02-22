@@ -1,4 +1,5 @@
 ﻿using MInitweetApi.Models;
+using static MInitweetApi.Controllers.UsersController;
 
 public class UserRepository : IUserRepository
 {
@@ -17,17 +18,20 @@ public class UserRepository : IUserRepository
         return current.user_Id;
     }
 
-    public int registerUser(User user)
+    public bool registerUser(Userdto user)
     {
-        var current = _context.User.Where(u => u.username == user.username);
+        var existalready = _context.User.Any(u => u.username == user.username);
+        if (existalready) return false;
         var newuser = new User
         {
             username = user.username,
             email = user.email,
-            pw_hash = user.pw_hash
+
+            pw_hash = user.pwd
         };
         _context.User.Add(newuser);
-        return newuser.user_Id;
+        _context.SaveChanges();
+        return true;
     }
 
     public bool Unfollow(string username, string unfollow)

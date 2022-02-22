@@ -13,7 +13,7 @@ namespace MInitweetApi.Controllers
         public MessagesController(DatabaseContext context, IMessageRepository messageRepository)
         {
             _context = context;
-                _messageRepository = messageRepository;
+            _messageRepository = messageRepository;
         }
 
         [HttpGet]
@@ -29,12 +29,15 @@ namespace MInitweetApi.Controllers
         {
             return new OkObjectResult(_messageRepository.GetUserTimeline(username));
         }
-        
+
         [HttpPost]
         [Route("msgs/{username}")]
         public async Task<IActionResult> addMessage([FromBody] Stringwrapper sw, string username)
         {
-            _messageRepository.newMessage(username, sw.content);
+            if (!_messageRepository.newMessage(username, sw.content))
+            {
+                return StatusCode(403);
+            }
             return NoContent();
         }
 
@@ -43,7 +46,9 @@ namespace MInitweetApi.Controllers
         [Route("msgs/{username}")]
         public async Task<IActionResult> getMessages(string username)
         {
-            return new OkObjectResult(_messageRepository.GetUserTimeline(username));
+            var messages = await _messageRepository.GetUserTimeline(username);
+            if (messages == null) return NoContent();
+            return Ok(messages);
         }
         public class Stringwrapper
         {
