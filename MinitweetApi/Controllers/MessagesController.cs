@@ -1,59 +1,54 @@
-﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using MInitweetApi.Models;
 
 namespace MInitweetApi.Controllers
 {
+    [Route("/")]
     [ApiController]
-    [Route("")]
     public class MessagesController : ControllerBase
     {
         private readonly DatabaseContext _context;
+        private readonly IMessageRepository _messageRepository;
 
-        public MessagesController(DatabaseContext context)
+        public MessagesController(DatabaseContext context, IMessageRepository messageRepository)
         {
             _context = context;
+                _messageRepository = messageRepository;
         }
 
-        // GET: api/Messages
-        [HttpGet("msgs")]
-        public async Task<ActionResult<IEnumerable<Message>>> GetMessage()
+        [HttpGet]
+        [Route("/public")]
+        public async Task<IActionResult> PublicTimeline()
         {
-            return await _context.Message.ToListAsync();
+            return new OkObjectResult(_messageRepository.getPublicTimeline());
         }
 
-        // GET: api/Messages
-        [HttpGet("msgs/{username}")]
-        public async Task<ActionResult<IEnumerable<Message>>> GetMessagebyUser(string username)
+        [HttpGet]
+        [Route("{username}")]
+        public async Task<IActionResult> UserTimeline(string username)
         {
-            var user = await _context.User.Where(e => e.username == username).SingleOrDefaultAsync();
-            return await _context.Message.Where(e => e.author_id == user.user_Id).ToListAsync();
+            return new OkObjectResult(_messageRepository.GetUserTimeline(username));
         }
-
-
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("msgs/{username}")]
-        public async Task<ActionResult<Message>> PostMessage(string username, Message message)
+        
+        [HttpPost]
+        [Route("msgs/{username}")]
+        public async Task<IActionResult> addMessage([FromBody] Stringwrapper sw, string username)
         {
-            var user = await _context.User.Where(e => e.username == username).SingleOrDefaultAsync();
-            message.author_id = user.user_Id;
-            message.user = user;
-            _context.Message.Add(message);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetMessage", new { id = message.message_Id }, message);
+            _messageRepository.newMessage(username, sw.content);
+            return NoContent();
         }
 
 
-        private bool MessageExists(int id)
+        [HttpGet]
+        [Route("msgs/{username}")]
+        public async Task<IActionResult> getMessages(string username)
         {
-            return _context.Message.Any(e => e.message_Id == id);
+            return new OkObjectResult(_messageRepository.GetUserTimeline(username));
         }
+        public class Stringwrapper
+        {
+            public string content { get; set; }
+        }
+
     }
 }

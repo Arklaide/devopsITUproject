@@ -1,12 +1,6 @@
-﻿#nullable disable
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using MInitweetApi.Models;
+using Newtonsoft.Json.Linq;
 
 namespace MinitweetApi.Controllers
 {
@@ -15,72 +9,45 @@ namespace MinitweetApi.Controllers
     public class FollowersController : ControllerBase
     {
         private readonly DatabaseContext _context;
+        private readonly IUserRepository _userRepository;
 
-        public FollowersController(DatabaseContext context)
+
+        public FollowersController(DatabaseContext context, IUserRepository userRepository)
         {
             _context = context;
+            _userRepository = userRepository;
         }
 
-        // GET: api/Followers/5
-        [HttpGet("fllws")]
-        public async Task<ActionResult<Follower>> GetFollower(string whousername, string whomusername)
+        [HttpPost]
+        [Route("fllws/{username}")]
+        public async Task<IActionResult> fllws(string username, [FromBodyAttribute] FllwDTO fllwDto)
         {
-            var follower = await _context.Follower.FindAsync();
-
-            if (follower == null)
+            if (string.IsNullOrEmpty(fllwDto.unfollow))
             {
-                return NotFound();
-            }
 
-            return follower;
-        }
-
-        // GET: api/Followers/5
-        [HttpGet("fllws/{username}")]
-        public async Task<ActionResult<Follower>> GetFollowerByUser(string username)
-        {
-            var user = await _context.User.Where(e => e.username == username).SingleOrDefaultAsync();
-
-            var follower = await _context.Follower.FindAsync();
-
-            if (follower == null)
-            {
-                return NotFound();
-            }
-
-            return follower;
-        }
-
-
-        // POST: api/Followers
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost("fllws/{username}")]
-        public async Task<ActionResult<Follower>> PostFollower(string username,Follower follower)
-        {
-            _context.Follower.Add(follower);
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateException)
-            {
-                if (FollowerExists(follower.who_id))
+                if (!_userRepository.Follow(username, fllwDto.follow))
                 {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
+                    return NotFound();
                 }
             }
+            else if (string.IsNullOrEmpty(fllwDto.follow))
+            {
 
-            return CreatedAtAction("GetFollower", new { id = follower.who_id }, follower);
+                if (!_userRepository.Unfollow(username, fllwDto.unfollow))
+                {
+                    return NoContent();
+                }
+            }
+            else
+                return BadRequest();
+
+            return NoContent();
         }
 
-
-        private bool FollowerExists(int id)
+        public class FllwDTO
         {
-            return _context.Follower.Any(e => e.who_id == id);
+            public string? follow { get; set; }
+            public string? unfollow { get; set; }
         }
     }
 }

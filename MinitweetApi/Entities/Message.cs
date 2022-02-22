@@ -6,16 +6,12 @@ namespace MInitweetApi.Models
     {
         [Key]
         public int message_Id { get; set; }
-        [Required]
-        public int author_id { get; set; }
-        [Required]
         public string text { get; set; }
-        [Required]
-        public int pub_date { get; set; }
-        [Required]
+        public DateTime pub_date { get; set; }
+        public bool flagged { get; set; }
         public User user { get; set; } 
+        public int author_id { get; set; }
 
-        public int flagged { get; set; }
 
     }
 }
