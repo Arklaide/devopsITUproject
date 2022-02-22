@@ -35,11 +35,11 @@ namespace MinitweetApi.Controllers
 
                 if (!_userRepository.Unfollow(username, fllwDto.unfollow))
                 {
-                    return NoContent();
+                    return NotFound();
                 }
             }
             else
-                return BadRequest();
+                return StatusCode(403);
 
             return NoContent();
         }
