@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MInitweetApi.Models;
-using Newtonsoft.Json.Linq;
 
 namespace MinitweetApi.Controllers
 {
@@ -51,7 +50,6 @@ namespace MinitweetApi.Controllers
             {
                 _utilityRepository.PutLatest(latest);
             }
-            
         }
 
         public class FllwDTO
