@@ -30,21 +30,4 @@ public class UtilityController : ControllerBase
             return StatusCode(404);
         }
     }
-    
-    [HttpPut]
-    [Route("latest")]
-    public async Task<ActionResult> PutLatest(int latest)
-    {
-        try
-        {
-            _repository.PutLatest(latest);
-            return Ok();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return StatusCode(404);
-        }
-    }
-    
 }

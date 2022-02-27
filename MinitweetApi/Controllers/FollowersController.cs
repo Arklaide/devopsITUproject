@@ -22,7 +22,7 @@ namespace MinitweetApi.Controllers
 
         [HttpPost]
         [Route("fllws/{username}")]
-        public async Task<IActionResult> fllws(int latest, [FromRoute] string username, [FromBodyAttribute] FllwDTO fllwDto)
+        public async Task<IActionResult> Fosllow(int latest, [FromRoute] string username, [FromBodyAttribute] FllwDTO fllwDto)
         {
             try
             {

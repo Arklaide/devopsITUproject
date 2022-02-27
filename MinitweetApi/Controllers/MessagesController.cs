@@ -34,7 +34,7 @@ namespace MInitweetApi.Controllers
         
         [HttpPost]
         [Route("msgs/{username}")]
-        public async Task<IActionResult> addMessage([FromBody] Stringwrapper sw, [FromRoute] string username, int latest)
+        public async Task<IActionResult> AddMessage(int latest, [FromBody] Stringwrapper sw, [FromRoute] string username)
         {
             _messageRepository.newMessage(username, sw.content);
             _utilityRepository.PutLatest(latest);
@@ -44,7 +44,7 @@ namespace MInitweetApi.Controllers
 
         [HttpGet]
         [Route("msgs/{username}")]
-        public async Task<IActionResult> getMessages([FromRoute] string username, int latest)
+        public async Task<IActionResult> GetMessages(int latest, [FromRoute] string username)
         {
             var res = _messageRepository.GetUserTimeline(username);
             _utilityRepository.PutLatest(latest);
