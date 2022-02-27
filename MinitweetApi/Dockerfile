@@ -6,6 +6,8 @@ EXPOSE 8080
 EXPOSE 80
 EXPOSE 443
 
+ENV ConnectionStrings__myDb1=$ConnectionStrings__myDb1
+
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
 COPY ["MinitweetApi.csproj", "."]
