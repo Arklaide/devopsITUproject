@@ -27,6 +27,7 @@ docker tag minitwitapi registry.digitalocean.com/devopsitu/minitwitapi:latest
 docker push registry.digitalocean.com/devopsitu/minitwitapi:latest
 
 doctl auth init
+
 doctl registry login
 
 docker pull registry.digitalocean.com/devopsitu/minitwitapi:latest
