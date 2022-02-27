@@ -3,7 +3,7 @@
   <PropertyGroup Label="Globals">
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
-    <ProjectGuid>79c55abb-8cce-41b6-90cf-76634d431739</ProjectGuid>
+    <ProjectGuid>5def3e98-5a06-465d-922e-60320c6bbe4c</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/swagger</DockerServiceUrl>
     <DockerServiceName>minitweetapi</DockerServiceName>

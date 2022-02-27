@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31911.196
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinitweetApi", "MinitweetApi\MinitweetApi.csproj", "{D2429B72-1867-435E-943B-15C582B5E860}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinitwitFrontend", "MinitwitFrontend\MinitwitFrontend\MinitwitFrontend.csproj", "{F2F04316-AE2A-4069-B8F2-736B0EE88D11}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{5DEF3E98-5A06-465D-922E-60320C6BBE4C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D2429B72-1867-435E-943B-15C582B5E860}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2429B72-1867-435E-943B-15C582B5E860}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2429B72-1867-435E-943B-15C582B5E860}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2429B72-1867-435E-943B-15C582B5E860}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F2F04316-AE2A-4069-B8F2-736B0EE88D11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F2F04316-AE2A-4069-B8F2-736B0EE88D11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F2F04316-AE2A-4069-B8F2-736B0EE88D11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F2F04316-AE2A-4069-B8F2-736B0EE88D11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5DEF3E98-5A06-465D-922E-60320C6BBE4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5DEF3E98-5A06-465D-922E-60320C6BBE4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5DEF3E98-5A06-465D-922E-60320C6BBE4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5DEF3E98-5A06-465D-922E-60320C6BBE4C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3E719655-727F-427B-A2B6-C85A3BDC42BE}
+	EndGlobalSection
+EndGlobal

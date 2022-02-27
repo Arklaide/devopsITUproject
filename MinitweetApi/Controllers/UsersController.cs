@@ -19,6 +19,12 @@ namespace MInitweetApi.Controllers
             _utilityRepository = utilityRepository;
         }
 
+        [HttpPost("add_message")]
+        public async void add_message(int author_id, string text)
+        {
+
+        }
+
         [HttpPost]
         [Route("register")]
         public async Task<ActionResult> register(int latest, [FromBody] Userdto u)
@@ -32,6 +38,8 @@ namespace MInitweetApi.Controllers
             _context.Add(user);
             _context.SaveChanges();
             _utilityRepository.PutLatest(latest);
+            var created = _userRepository.registerUser(u);
+            if (!created) return BadRequest();
             return NoContent();
         }
 
@@ -39,8 +47,8 @@ namespace MInitweetApi.Controllers
         public async Task<ActionResult<User>> login(string username)
         {
 
-             var user = _context.User.Where(u => u.username == username).FirstOrDefault();
-             return user; 
+            var user = _context.User.Where(u => u.username == username).FirstOrDefault();
+            return user;
         }
 
 

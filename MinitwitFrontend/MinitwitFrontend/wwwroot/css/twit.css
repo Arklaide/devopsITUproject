@@ -1,0 +1,30 @@
+﻿
+
+.twit-container {
+    background-color: #3a064726;
+    display: flex;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #3a064747 !important;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+}
+.twit-container .twit-pic-container {
+    background-color: yellow;
+    height: 80px;
+    width: 80px;
+    margin-right: 20px;
+}
+.twit-container .name-date-container {
+    box-sizing: border-box;
+    color: #4c837f;
+    color: black;
+}
+.twit-container .name-date-container .name-twit-displayed {
+    font-weight: bolder;
+}
+.twit-container .name-date-container .date {
+    color: #AAADAD;
+    font-weight: bolder;
+}

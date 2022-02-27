@@ -16,6 +16,7 @@ namespace MInitweetApi.Controllers
             _context = context;
             _messageRepository = messageRepository;
             _utilityRepository = utilityRepository;
+
         }
 
         [HttpGet]
@@ -31,13 +32,17 @@ namespace MInitweetApi.Controllers
         {
             return new OkObjectResult(_messageRepository.GetUserTimeline(username));
         }
-        
+
         [HttpPost]
         [Route("msgs/{username}")]
         public async Task<IActionResult> AddMessage(int latest, [FromBody] Stringwrapper sw, [FromRoute] string username)
         {
-            _messageRepository.newMessage(username, sw.content);
-            _utilityRepository.PutLatest(latest);
+
+            if (!_messageRepository.newMessage(username, sw.content))
+            {
+                 _utilityRepository.PutLatest(latest);
+                return StatusCode(403);
+            }
             return NoContent();
         }
 
@@ -46,9 +51,11 @@ namespace MInitweetApi.Controllers
         [Route("msgs/{username}")]
         public async Task<IActionResult> GetMessages(int latest, [FromRoute] string username)
         {
-            var res = _messageRepository.GetUserTimeline(username);
+
+            var messages = await _messageRepository.GetUserTimeline(username);
             _utilityRepository.PutLatest(latest);
-            return new OkObjectResult(res);
+            if (messages == null) return NoContent();
+            return Ok(messages);
         }
         public class Stringwrapper
         {

@@ -48,7 +48,7 @@ namespace MinitweetApi.Controllers
             }
             finally
             {
-                _utilityRepository.PutLatest(latest);
+            return NoContent();
             }
         }
 

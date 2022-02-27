@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  minitweetapi:
+    image: ${DOCKER_REGISTRY-}minitweetapi
+    build:
+      context: .
+      dockerfile: MinitweetApi/Dockerfile
+
+  minitwitfrontend:
+    image: ${DOCKER_REGISTRY-}minitwitfrontend
+    build:
+      context: .
+      dockerfile: MinitwitFrontend/MinitwitFrontend/Dockerfile
+
