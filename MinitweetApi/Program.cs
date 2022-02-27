@@ -14,7 +14,7 @@ builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 
 
 
-var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true).AddEnvironmentVariables().Build();
+var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true).AddDockerSecrets().AddEnvironmentVariables().Build();
 builder.Services.AddDbContextFactory<DatabaseContext>(options =>
 {
     options.UseNpgsql(config.GetConnectionString("myDb1"));
