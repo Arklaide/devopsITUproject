@@ -6,7 +6,7 @@ EXPOSE 8080
 EXPOSE 80
 EXPOSE 443
 
-ENV ConnectionStrings__myDb1=1234
+
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
@@ -20,6 +20,8 @@ FROM build AS publish
 RUN dotnet publish "MinitweetApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
+RUN --mount=type=secret,id=ConnectionStrings__myDb1 \
+    export ConnectionStrings__myDb1=`cat /run/secrets/ConnectionStrings__myDb1`
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MinitweetApi.dll"]
