@@ -27,10 +27,10 @@ public class MessageRepository : IMessageRepository
         return m;
     }
 
-    public void newMessage(string username, string message)
+    public bool newMessage(string username, string message)
     {
         var user = _context.User.FirstOrDefault(u => u.username == username);
-        if (user == null) throw new Exception();
+        if (user == null) return false;
         var msg = new Message
         {
             user = user,
@@ -41,5 +41,6 @@ public class MessageRepository : IMessageRepository
         };
         _context.Message.Add(msg);
         _context.SaveChanges();
+        return true;
     }
 }

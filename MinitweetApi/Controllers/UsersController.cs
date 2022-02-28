@@ -20,21 +20,15 @@ namespace MInitweetApi.Controllers
         [HttpPost("add_message")]
         public async void add_message(int author_id, string text)
         {
-            
+
         }
 
         [HttpPost]
         [Route("register")]
         public async Task<ActionResult> register([FromBody] Userdto u)
         {
-            var user = new User
-            {
-                username = u.username,
-                email = u.email,
-                pw_hash = u.pwd
-            };
-            _context.Add(user);
-            _context.SaveChanges();
+            var created = _userRepository.registerUser(u);
+            if (!created) return BadRequest();
             return NoContent();
         }
 
@@ -42,8 +36,8 @@ namespace MInitweetApi.Controllers
         public async Task<ActionResult<User>> login(string username)
         {
 
-             var user = _context.User.Where(u => u.username == username).FirstOrDefault();
-            return user; 
+            var user = _context.User.Where(u => u.username == username).FirstOrDefault();
+            return user;
         }
 
 
