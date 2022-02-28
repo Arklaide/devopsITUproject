@@ -51,4 +51,4 @@ jobs:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: docker run -d -p 8000:80 --name minitwitapi registry.digitalocean.com/devopsitu/minitwitapi:latest
+          script: docker run -e "ConnectionStrings__myDb1=${{ secrets.DBCONSTRING }}" -d -p 8000:80 --name minitwitapi registry.digitalocean.com/devopsitu/minitwitapi:latest

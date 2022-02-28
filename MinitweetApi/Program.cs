@@ -16,16 +16,10 @@ builder.Services.AddScoped<IUtilityRepository, UtilityRepository>();
 
 
 
-var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true).AddDockerSecrets().Build();
-    Console.WriteLine("ConnectionString: " + config.GetConnectionString("myDb1"));
-    Console.WriteLine("ConnectionString2: " + config.GetConnectionString("ConnectionStrings__myDb1"));
-    Console.WriteLine("ConnectionString3: " + config["ConnectionStrings__myDb1"]);
-    Console.WriteLine("ConnectionString4: " + config["ConnectionStrings:myDb1"]);
-    Console.WriteLine("ConnectionString5: " + config["myDb1"]);
-    Console.WriteLine("ConnectionString6: " + config["ConnectionStrings_myDb1"]);
+var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true).AddEnvironmentVariables().Build();
 builder.Services.AddDbContextFactory<DatabaseContext>(options =>
 {
-    options.UseNpgsql(config["ConnectionStrings__myDb1"]);
+    options.UseNpgsql(config.GetConnectionString("myDb1"));
 });
 
 
