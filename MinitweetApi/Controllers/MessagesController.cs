@@ -9,11 +9,14 @@ namespace MInitweetApi.Controllers
     {
         private readonly DatabaseContext _context;
         private readonly IMessageRepository _messageRepository;
+        private readonly IUtilityRepository _utilityRepository;
 
-        public MessagesController(DatabaseContext context, IMessageRepository messageRepository)
+        public MessagesController(DatabaseContext context, IMessageRepository messageRepository, IUtilityRepository utilityRepository)
         {
             _context = context;
             _messageRepository = messageRepository;
+            _utilityRepository = utilityRepository;
+
         }
 
         [HttpGet]
@@ -25,17 +28,19 @@ namespace MInitweetApi.Controllers
 
         [HttpGet]
         [Route("{username}")]
-        public async Task<IActionResult> UserTimeline(string username)
+        public async Task<IActionResult> UserTimeline([FromRoute] string username)
         {
             return new OkObjectResult(_messageRepository.GetUserTimeline(username));
         }
 
         [HttpPost]
         [Route("msgs/{username}")]
-        public async Task<IActionResult> addMessage([FromBody] Stringwrapper sw, string username)
+        public async Task<IActionResult> AddMessage(int latest, [FromBody] Stringwrapper sw, [FromRoute] string username)
         {
+
             if (!_messageRepository.newMessage(username, sw.content))
             {
+                 _utilityRepository.PutLatest(latest);
                 return StatusCode(403);
             }
             return NoContent();
@@ -44,9 +49,11 @@ namespace MInitweetApi.Controllers
 
         [HttpGet]
         [Route("msgs/{username}")]
-        public async Task<IActionResult> getMessages(string username)
+        public async Task<IActionResult> GetMessages(int latest, [FromRoute] string username)
         {
+
             var messages = await _messageRepository.GetUserTimeline(username);
+            _utilityRepository.PutLatest(latest);
             if (messages == null) return NoContent();
             return Ok(messages);
         }

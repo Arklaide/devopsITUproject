@@ -10,11 +10,13 @@ namespace MInitweetApi.Controllers
     {
         private readonly DatabaseContext _context;
         private readonly IUserRepository _userRepository;
+        private readonly IUtilityRepository _utilityRepository;
 
-        public UsersController(DatabaseContext context, IUserRepository userRepository)
+        public UsersController(DatabaseContext context, IUserRepository userRepository, IUtilityRepository utilityRepository)
         {
             _context = context;
             _userRepository = userRepository;
+            _utilityRepository = utilityRepository;
         }
 
         [HttpPost("add_message")]
@@ -25,8 +27,17 @@ namespace MInitweetApi.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult> register([FromBody] Userdto u)
+        public async Task<ActionResult> register(int latest, [FromBody] Userdto u)
         {
+            var user = new User
+            {
+                username = u.username,
+                email = u.email,
+                pw_hash = u.pwd
+            };
+            _context.Add(user);
+            _context.SaveChanges();
+            _utilityRepository.PutLatest(latest);
             var created = _userRepository.registerUser(u);
             if (!created) return BadRequest();
             return NoContent();
@@ -46,8 +57,6 @@ namespace MInitweetApi.Controllers
             public string username { get; set; }
             public string email { get; set; }
             public string pwd { get; set; }
-
-
         }
 
     }
