@@ -20,7 +20,7 @@ Go to http://localhost:8000/
 
 docker rm minitwitapi
 
-## Misc
+## Misc deploy commands
 
 docker tag minitwitapi registry.digitalocean.com/devopsitu/minitwitapi:latest
 
