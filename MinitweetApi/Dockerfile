@@ -2,15 +2,16 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
+EXPOSE 8080
 EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["MinitweetApi/MinitweetApi.csproj", "MinitweetApi/"]
-RUN dotnet restore "MinitweetApi/MinitweetApi.csproj"
+COPY ["MinitweetApi.csproj", "."]
+RUN dotnet restore "./MinitweetApi.csproj"
 COPY . .
-WORKDIR "/src/MinitweetApi"
+WORKDIR "/src/."
 RUN dotnet build "MinitweetApi.csproj" -c Release -o /app/build
 
 FROM build AS publish
