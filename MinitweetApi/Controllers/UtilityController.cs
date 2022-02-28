@@ -1,33 +1,36 @@
 using Microsoft.AspNetCore.Mvc;
 using MInitweetApi.Models;
 
-namespace MinitweetApi.Controllers;
-
-[Route("")]
-[ApiController]
-public class UtilityController : ControllerBase
+namespace MinitweetApi.Controllers
 {
-    private readonly DatabaseContext _context;
-    private readonly IUtilityRepository _repository;
 
-    public UtilityController(DatabaseContext context, IUtilityRepository repository)
-    {
-        _context = context;
-        _repository = repository;
-    }
 
-    [HttpGet]
-    [Route("latest")]
-    public async Task<ActionResult> Latest()
+    [Route("")]
+    [ApiController]
+    public class UtilityController : ControllerBase
     {
-        try
+        private readonly DatabaseContext _context;
+        private readonly IUtilityRepository _repository;
+
+        public UtilityController(DatabaseContext context, IUtilityRepository repository)
         {
-            return new OkObjectResult(_repository.Latest());
+            _context = context;
+            _repository = repository;
         }
-        catch (Exception e)
+
+        [HttpGet]
+        [Route("latest")]
+        public async Task<ActionResult> Latest()
         {
-            Console.WriteLine(e);
-            return StatusCode(404);
+            try
+            {
+                return new OkObjectResult(_repository.Latest());
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return StatusCode(404);
+            }
         }
     }
 }

@@ -46,9 +46,9 @@ namespace MinitweetApi.Controllers
 
                 return NoContent();
             }
-            finally
+            catch
             {
-            return NoContent();
+                return NoContent();
             }
         }
 
