@@ -17,7 +17,8 @@ FROM build AS publish
 RUN dotnet publish "MinitweetApi.csproj" -c Release -o /app/publish
 
 FROM base AS final
-RUN --mount=type=secret,id=ConnectionStrings__myDb1 ls -la /run/secrets
+RUN --mount=type=secret,id=ConnectionStrings__myDb1 \
+  cat /run/secrets/ConnectionStrings__myDb1
 WORKDIR /app
 COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "MinitweetApi.dll"]
