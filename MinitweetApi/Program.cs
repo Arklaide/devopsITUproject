@@ -18,6 +18,11 @@ builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true).AddDockerSecrets().AddEnvironmentVariables().Build();
 builder.Services.AddDbContextFactory<DatabaseContext>(options =>
 {
+    Console.WriteLine("ConnectionString: " + config.GetConnectionString("myDb1"));
+    Console.WriteLine("ConnectionString2: " + config.GetConnectionString("ConnectionStrings__myDb1"));
+    Console.WriteLine("ConnectionString3: " + config["ConnectionStrings__myDb1"]);
+    Console.WriteLine("ConnectionString4: " + config["ConnectionStrings:myDb1"]);
+    Console.WriteLine("ConnectionString5: " + config["myDb1"]);
     options.UseNpgsql(config["ConnectionStrings__myDb1"]);
 });
 
