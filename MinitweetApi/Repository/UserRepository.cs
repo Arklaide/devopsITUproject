@@ -26,7 +26,6 @@ public class UserRepository : IUserRepository
         {
             username = user.username,
             email = user.email,
-
             pw_hash = user.pwd
         };
         _context.User.Add(newuser);

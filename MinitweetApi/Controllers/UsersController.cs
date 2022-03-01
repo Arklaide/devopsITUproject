@@ -29,17 +29,9 @@ namespace MInitweetApi.Controllers
         [Route("register")]
         public async Task<ActionResult> register(int latest, [FromBody] Userdto u)
         {
-            var user = new User
-            {
-                username = u.username,
-                email = u.email,
-                pw_hash = u.pwd
-            };
-            _context.Add(user);
-            _context.SaveChanges();
-            _utilityRepository.PutLatest(latest);
             var created = _userRepository.registerUser(u);
             if (!created) return BadRequest();
+            _utilityRepository.PutLatest(latest);
             return NoContent();
         }
 

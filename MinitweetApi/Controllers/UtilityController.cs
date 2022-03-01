@@ -24,7 +24,12 @@ namespace MinitweetApi.Controllers
         {
             try
             {
-                return new OkObjectResult(_repository.Latest());
+                var res = _repository.Latest();
+                var obj = new
+                {
+                    latest = res
+                };
+                return new OkObjectResult(obj);
             }
             catch (Exception e)
             {
