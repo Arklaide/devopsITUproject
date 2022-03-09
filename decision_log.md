@@ -3,6 +3,10 @@
 This is the decision log. Create a new headline (##) when creating updates and state the date.  
 E.g \## Cloud hosting decision - UPDATE 2023-01-15
 
+## Monitoring - UPDATE 2022-08-03 (Women's International Day)
+
+We have started to implement monitoring using Prometheus following this guide: https://dale-bingham-soteriasoftware.medium.com/net-core-web-api-metrics-with-prometheus-and-grafana-fe84a52d9843
+
 ## CI DECISION - UPDATE 2022-01-03
 
 - We have chosen to use GitHub Actions to keep more things on the same platform to reduce complexity of the project

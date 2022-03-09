@@ -6,10 +6,14 @@ services:
     build:
       context: .
       dockerfile: MinitweetApi/Dockerfile
-
-  minitwitfrontend:
-    image: ${DOCKER_REGISTRY-}minitwitfrontend
-    build:
-      context: .
-      dockerfile: MinitwitFrontend/MinitwitFrontend/Dockerfile
-
+      
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - "9090:9090"
+        
+  grafana:
+    image: grafana/grafana:4.5.2
+    ports:
+      - "3000:3000"

@@ -8,7 +8,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["MinitweetApi.csproj", "."]
+COPY ["MinitweetApi/MinitweetApi.csproj", "."]
 RUN dotnet restore "./MinitweetApi.csproj"
 COPY . .
 WORKDIR "/src/."
