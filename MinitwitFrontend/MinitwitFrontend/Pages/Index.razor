@@ -1,25 +1,69 @@
 ﻿@page "/"
 @inherits IndexBase
+@if(showShareSuccesfulMessage)
+{
+<div class="twit-container">Your message was recorded.</div>
+}
 
 <h1 style="font-size: 28px; margin-bottom: 20px;">My Timeline</h1>
+
 @if (user != null)
+{
+
+<div style="display: flex; align-items: flex-start; justify-content: center; flex-direction: column">
+    <div>
+        What's on your mind @user.username ?
+    </div>
+
+
+    <div style="width: 100%">
+        <EditForm Model="@twit" OnValidSubmit="OnShareTwit">
+            <DataAnnotationsValidator />
+            <div style="display: flex; align-items: center; justify-content: center; flex-direction: row">
+                <div style="flex: 1">
+                    <div class="form-group">
+                        <InputText @bind-Value="twit.text" class="form-control" />
+                        <ValidationMessage For="@(() => twit.text)" />
+                    </div>
+                </div>
+                <button disabled="@loading" class="btn btn-primary" style="margin-bottom: 1em">
+                    @if (loading)
+                {
+                    <span class="spinner-border spinner-border-sm mr-1"></span>
+                }
+                    Share
+                </button>
+            </div>
+        </EditForm>
+
+
+
+    </div>
+</div>
+
+@if(twits.Any())
 {
     @foreach (var twit in twits)
     {
-<div class="twit-container">
-    <div class="twit-pic-container">
-        //image
-    </div>
-    <div class="name-date-container"> 
-        <div class="name-twit-displayed">
-            <b> <u>> @twit.Name </u> </b> @twit.Twit
+        <div class="twit-container">
+            <div class="twit-pic-container">
+             
+            </div>
+            <div class="name-date-container"> 
+                <div class="name-twit-displayed">
+                    <b> <u>> <a class="clickable-href" @onclick="() => GoToUserProfile(twit.user.user_Id)" > @twit.user.username </a></u> </b> @twit.text
+                </div>
+                <div class="date">
+                    @twit.pub_date
+                </div>
+            </div>
         </div>
-        <div class="date">
-            @twit.Date
-        </div>
-    </div>
-</div>
     }
+}
+else 
+{
+    <div class="twit-container">There's no message so far.</div>
+}
 
 }
 

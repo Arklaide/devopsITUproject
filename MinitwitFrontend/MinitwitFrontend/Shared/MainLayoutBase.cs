@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MinitwitFrontend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,14 +15,25 @@ namespace MinitwitFrontend.Shared
         private HttpClient _httpClient { get; set; }
         [Inject]
         LoginState LoginState { get; set; }
+        protected User LoggedInUser {get; set;}
         protected bool isAuthenticated { get; set; } = false;
         [Inject]
         private NavigationManager NavigationManager { get; set; }
 
         protected override async Task OnInitializedAsync()
         {
-            LoginState.OnAuthenticationChanged += StateHasChanged;
+            LoginState.OnAuthenticationChanged  += async () => await UpdateLoginState();
+            if (LoginState.isAuthenticated)
+            {
+                LoggedInUser = LoginState.loggedInUser;
+            }
 
+        }
+        protected async Task UpdateLoginState() {
+            isAuthenticated = LoginState.isAuthenticated;
+            LoggedInUser = LoginState.loggedInUser;
+            StateHasChanged();
+            await Task.CompletedTask;
         }
         protected async void LogoutUser()
         {
@@ -32,6 +44,10 @@ namespace MinitwitFrontend.Shared
         {
             var results = await LoginState.LogOutUser();
             NavigationManager.NavigateTo("/login");
+        } 
+        protected async void Register()
+        {
+            NavigationManager.NavigateTo("/register");
         }
     }
 }

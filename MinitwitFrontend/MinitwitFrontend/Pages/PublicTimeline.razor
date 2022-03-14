@@ -7,14 +7,14 @@
 { 
 <div class="twit-container">
     <div class="twit-pic-container">
-        //image
+        
     </div>
     <div class="name-date-container">
         <div class="name-twit-displayed">
-            <b> <u>> @twit.Name </u> </b> @twit.Twit
+            <b> <u> <a class="clickable-href" @onclick="() => GoToUserProfile(twit.user.user_Id)"> @twit.user.username </a> </u> </b> @twit.text
         </div>
         <div class="date">
-            @twit.Date
+            @twit.pub_date
         </div>
     </div>
 </div>

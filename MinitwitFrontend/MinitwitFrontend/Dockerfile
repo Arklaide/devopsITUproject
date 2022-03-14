@@ -2,21 +2,22 @@
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS base
 WORKDIR /app
+EXPOSE 5000
 EXPOSE 80
 EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["MinitwitFrontend/MinitwitFrontend/MinitwitFrontend.csproj", "MinitwitFrontend/MinitwitFrontend/"]
-RUN dotnet restore "MinitwitFrontend/MinitwitFrontend/MinitwitFrontend.csproj"
+COPY ["MinitwitFrontend.csproj", "."]
+RUN dotnet restore "./MinitwitFrontend.csproj"
 COPY . .
-WORKDIR "/src/MinitwitFrontend/MinitwitFrontend"
+WORKDIR "/src/."
 RUN dotnet build "MinitwitFrontend.csproj" -c Release -o /app/build
 
 FROM build AS publish
 RUN dotnet publish "MinitwitFrontend.csproj" -c Release -o /app/publish
 
-FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MinitwitFrontend.dll"]
+FROM nginx:alpine AS final
+WORKDIR /usr/share/nginx/html
+COPY --from=publish /app/publish/wwwroot .
+COPY nginx.conf /etc/nginx/nginx.conf

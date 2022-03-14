@@ -11,7 +11,7 @@ namespace MinitwitFrontend.Pages
 {
     public class RegisterBase : ComponentBase
     {
-        protected userDto model = new userDto();
+        protected Userdto user = new Userdto();
         protected bool loading;
         protected string errorText = "";
 
@@ -21,23 +21,39 @@ namespace MinitwitFrontend.Pages
         LoginState LoginState { get; set; }
         [Inject]
         private HttpClient _httpClient { get; set; }
+        protected string pwd1 {get; set;}
+        protected string pwd2 {get; set;}
 
         protected async void OnValidSubmit()
         {
-            var results = await LoginState.RegisterUser(model);
+            if (pwd1 == pwd2)
+            {
+                user.pwd = pwd1;
+            }
+            else
+            {
+                errorText = "Passwords don't match";
+                StateHasChanged();
+                return;
+            }
+            var results = await LoginState.RegisterUser(user);
 
             StateHasChanged();
             if (results)
             {
-                NavigationManager.NavigateTo("/");
+                NavigationManager.NavigateTo("/login");
             }
             else
             {
                 errorText = "We could not register";
+                StateHasChanged();
+                return;
             }
         }
         protected override async Task OnInitializedAsync()
         {
+            pwd1 = "";
+            pwd2 = "";
             if (LoginState.isAuthenticated)
             {
                 NavigationManager.NavigateTo("/");

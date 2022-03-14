@@ -2,18 +2,12 @@ version: "3.4"
 
 services:
   minitweetapi:
-    image: minitweetapi
-    build:
-      context: ./MinitweetApi
-      dockerfile: Dockerfile
+    image: registry.digitalocean.com/devopsitu/minitwitapi:latest
     ports:
-      - "8080:80"
+      - "8000:80"
 
   minitwitfrontend:
-    image: minitwitfrontend
-    build:
-      context: ./MinitwitFrontend/MinitwitFrontend
-      dockerfile: Dockerfile
+    image: registry.digitalocean.com/devopsitu/minitwitfrontend:latest
     ports:
       - "5000:80"
 
