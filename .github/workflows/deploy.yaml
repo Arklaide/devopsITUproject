@@ -56,4 +56,4 @@ jobs:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: docker-compose -f docker-compose.production.yml up --env-file .env
+          script: docker-compose -f docker-compose.production.yml up -d --env-file .env
