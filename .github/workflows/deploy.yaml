@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           source: "docker-compose.production.yml"
-          target: "docker-compose.yml"
+          target: ""
       - name: Docker Compose Pull
         uses: appleboy/ssh-action@master
         with:
@@ -56,4 +56,4 @@ jobs:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: docker-compose up --env-file .env
+          script: docker-compose up -f docker-compose.production.yml --env-file .env
