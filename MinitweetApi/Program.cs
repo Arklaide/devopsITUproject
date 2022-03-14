@@ -5,6 +5,9 @@ using Prometheus;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+var root = Directory.GetCurrentDirectory();
+var dotenv = Path.Combine(root, ".env");
+MInitweetApi.DotEnv.Load(dotenv);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
