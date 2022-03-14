@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           source: "docker-compose.production.yml"
-          target: ""
+          target: "/root"
       - name: Docker Compose Pull
         uses: appleboy/ssh-action@master
         with:
