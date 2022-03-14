@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using MInitweetApi.Models;
-using Mcrio.Configuration.Provider.Docker.Secrets;
 using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
