@@ -4,17 +4,17 @@
 <div class="card">
     <h4 class="card-header">Login</h4>
     <div class="card-body">
-        <EditForm Model="@model" OnValidSubmit="OnValidSubmit">
+        <EditForm Model="@user" OnValidSubmit="OnValidSubmit">
             <DataAnnotationsValidator />
             <div class="form-group">
                 <label>Username</label>
-                <InputText @bind-Value="model.Email" class="form-control" />
-                <ValidationMessage For="@(() => model.Email)" />
+                <InputText @bind-Value="user.username" class="form-control" />
+                <ValidationMessage For="@(() => user.username)" />
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <InputText @bind-Value="model.Password" type="password" class="form-control" />
-                <ValidationMessage For="@(() => model.Password)" />
+                <InputText @bind-Value="user.pwd" type="password" class="form-control" />
+                <ValidationMessage For="@(() => user.pwd)" />
             </div>
             <button disabled="@loading" class="btn btn-primary">
                 @if (loading)

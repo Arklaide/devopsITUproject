@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace MinitwitFrontend.Models
 {
-    public class TwitDto
+    public class FllwDTO
     {
-        public string Name { get; set; }
-        public string Date { get; set; }
-        public string Twit { get; set; }
+        public string follow { get; set; }
+        public string unfollow { get; set; }
     }
 }

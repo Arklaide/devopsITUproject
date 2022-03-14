@@ -14,8 +14,11 @@ namespace MinitwitFrontend.Pages
         LoginState LoginState { get; set; }
         [Inject]
         private NavigationManager NavigationManager { get; set; }
-        protected userDto user;
-        protected List<TwitDto> twits { get; set; }
+        protected User user;
+        protected bool loading;
+        protected List<Message> twits { get; set; }
+        protected Message twit = new Message();
+        protected bool showShareSuccesfulMessage { get; set; }
 
         protected override void OnParametersSet()
         {
@@ -24,6 +27,26 @@ namespace MinitwitFrontend.Pages
                 NavigationManager.NavigateTo("/public-timeline");
             }
             user = LoginState.loggedInUser;
+        }
+
+        protected async void OnShareTwit()
+        {
+            showShareSuccesfulMessage = true;
+            var demoTwit1 = new Message();
+            demoTwit1.pub_date = DateTime.Now;
+            var user = new User();
+            user.username = "Harpa";
+            demoTwit1.user = user;
+            demoTwit1.text = "some twit";
+
+            twits.Add(demoTwit1);
+            StateHasChanged();
+            await Task.CompletedTask;
+        }
+
+        protected void GoToUserProfile(int userId)
+        {
+            NavigationManager.NavigateTo($"/user-timeline/{userId}");
         }
 
         protected override async Task OnInitializedAsync()
@@ -40,13 +63,15 @@ namespace MinitwitFrontend.Pages
 
             //}
 
-
+            showShareSuccesfulMessage = false;
             //fake list remove later
-            twits = new List<TwitDto>();
-            var demoTwit1 = new TwitDto();
-            demoTwit1.Date = "20.jan 2022";
-            demoTwit1.Name = "Johan Fritze Neve";
-            demoTwit1.Twit = "It was my birthday yesterday xD";
+            twits = new List<Message>();
+            var demoTwit1 = new Message();
+            demoTwit1.pub_date = DateTime.Now;
+            var user = new User();
+            user.username = "Harpa";
+            demoTwit1.user = user;
+            demoTwit1.text = "some twit";
 
             twits.Add(demoTwit1);
 

@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace MinitwitFrontend.Models
 {
-    public class UserInputModel
+    public class Stringwrapper
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string content { get; set; }
     }
 }

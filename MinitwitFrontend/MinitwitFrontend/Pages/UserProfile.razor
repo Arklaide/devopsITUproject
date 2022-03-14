@@ -1,0 +1,54 @@
+﻿@page "/user-timeline/{UserId}"
+@inherits UserProfileBase
+
+
+@if (@userThatHasThisProfile != null)
+{
+    <h1 style="font-size: 28px; margin-bottom: 20px;">@userThatHasThisProfile.username's Timeline</h1>
+}
+@if (currentlyLoggedInUser != null)
+{
+
+    @if (isSameUser)
+    {
+        <div class="twit-container">
+            This is you!
+        </div>
+    }
+    else
+    {
+        @if (isFollowingUser)
+        {
+            <div class="twit-container">
+                You are currently following this user.  <a class="clickable-href" @onclick="UnfollowUser">Unfollow user.</a>
+            </div>
+        }
+        else
+        {
+            <div class="twit-container">
+                You are not yet following this user.  <a class="clickable-href" @onclick="FollowUser">Follow user.</a>
+            </div>
+        }
+
+    }
+}
+
+
+@foreach (var twit in twits)
+{
+    <div class="twit-container">
+        <div class="twit-pic-container">
+
+        </div>
+        <div class="name-date-container">
+            <div class="name-twit-displayed">
+                <b> <u> <a class="clickable-href" @onclick="() => GoToUserProfile(twit.user.user_Id)"> @twit.user.username </a> </u> </b> @twit.text
+            </div>
+            <div class="date">
+                @twit.pub_date
+            </div>
+        </div>
+    </div>
+}
+
+

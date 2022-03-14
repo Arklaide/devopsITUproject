@@ -11,8 +11,16 @@
             <div class="main">
                 <div class="top-row px-4" style="display: flex; align-items: center; justify-content: center">
                     <div style="width: 100%" class="filler"></div>
-                    <a @onclick="@LogoutUser" class="ml-md-auto">Sign Out</a>
-                    <a style="padding-left: 10px" @onclick="@LoginUser" class="ml-md-auto">Sign In</a>
+
+                    @if (isAuthenticated)
+                    {
+                        <a style="padding-left: 10px" @onclick="@LogoutUser" class="ml-md-auto clickable-href">Sign Out [@LoggedInUser.username]</a>
+                    }
+                    else
+                    {
+                        <a style="padding-left: 10px" @onclick="@Register" class="ml-md-auto clickable-href">Sign Up</a>
+                        <a style="padding-left: 10px" @onclick="@LoginUser" class="ml-md-auto clickable-href">Sign In</a>
+                    }
                 </div>
 
                 <div class="content px-4">

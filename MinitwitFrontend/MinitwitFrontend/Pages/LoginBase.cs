@@ -12,7 +12,7 @@ namespace MinitwitFrontend.Pages
 {
     public class LoginBase : ComponentBase
     {
-        protected UserInputModel model = new UserInputModel();
+        protected Userdto user = new Userdto();
         protected bool loading;
         protected string errorText = "";
 
@@ -25,7 +25,17 @@ namespace MinitwitFrontend.Pages
    
         protected async void OnValidSubmit()
         {
-            var results = await LoginState.LoginUser(model);
+            //try
+            //{
+            //    var response = await _httpClient.GetFromJsonAsync<Object>("public");
+            //}
+            //catch (Exception e)
+            //{
+            //    throw new Exception(e.Message);
+            //}
+
+         
+            var results = await LoginState.LoginUser(user);
          
             StateHasChanged();
             if (results)
