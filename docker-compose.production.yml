@@ -3,6 +3,8 @@ version: "3.4"
 services:
   minitweetapi:
     image: registry.digitalocean.com/devopsitu/minitwitapi:latest
+    env_file:
+      - .env
     ports:
       - "8000:80"
 
