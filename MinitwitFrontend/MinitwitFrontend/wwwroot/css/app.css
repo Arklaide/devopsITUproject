@@ -6,6 +6,11 @@ html, body {
 
 a, .btn-link {
     color: #0366d6;
+
+}
+.clickable-href {
+    text-decoration: underline !important;
+    cursor: pointer !important;
 }
 
 .btn-primary {
