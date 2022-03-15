@@ -21,7 +21,6 @@ builder.Services.AddDbContextFactory<DatabaseContext>(options =>
     options.UseNpgsql(config.GetConnectionString("myDb1"));
 });
 
-
 var app = builder.Build();
 
 // Use the Prometheus middleware

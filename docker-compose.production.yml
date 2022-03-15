@@ -1,25 +1,39 @@
 version: "3.4"
 
+networks:
+  minitwit:
+
 services:
   minitweetapi:
     image: registry.digitalocean.com/devopsitu/minitwitapi:latest
+    container_name: minitwitapi
     env_file:
       - .env
     ports:
       - "8000:80"
+    networks:
+      - minitwit
 
   minitwitfrontend:
     image: registry.digitalocean.com/devopsitu/minitwitfrontend:latest
     ports:
       - "5000:80"
+    networks:
+      - minitwit
 
   prometheus:
     image: prom/prometheus
     container_name: prometheus
     ports:
       - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - minitwit
 
   grafana:
     image: grafana/grafana:4.5.2
     ports:
       - "3000:3000"
+    networks:
+      - minitwit

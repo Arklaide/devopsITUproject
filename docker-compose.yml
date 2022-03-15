@@ -6,7 +6,7 @@ networks:
 services:
   minitweetapi:
     image: minitweetapi
-    container_name: minitwit
+    container_name: minitwitapi
     build:
       context: ./MinitweetApi
       dockerfile: Dockerfile
