@@ -24,18 +24,6 @@ builder.Services.AddDbContextFactory<DatabaseContext>(options =>
 
 var app = builder.Build();
 
-var counter = Metrics.CreateCounter("peopleapi_path_counter", "Counts requests to the People API endpoints");
-
-/*app.Use((context, next) =>
-{
-    counter.Inc();
-    Console.WriteLine("counter: " + counter.Value);
-    return next();
-});*/
-
-Console.WriteLine("incrementing");
-counter.Inc();
-
 // Use the Prometheus middleware
 app.UseMetricServer();
 app.UseHttpMetrics();
