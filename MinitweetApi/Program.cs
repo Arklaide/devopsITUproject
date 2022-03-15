@@ -21,22 +21,17 @@ builder.Services.AddDbContextFactory<DatabaseContext>(options =>
     options.UseNpgsql(config.GetConnectionString("myDb1"));
 });
 
-
 var app = builder.Build();
 
-var counter = Metrics.CreateCounter("peopleapi_path_counter", "Counts requests to the People API endpoints", new CounterConfiguration
-{
-LabelNames = new[] { "method", "endpoint" }
-});
-
-app.Use((context, next) =>
-{
-    counter.WithLabels(context.Request.Method, context.Request.Path).Inc();
-    return next();
-});
 // Use the Prometheus middleware
 app.UseMetricServer();
 app.UseHttpMetrics();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapMetrics();
+});
 
 
 // Configure the HTTP request pipeline.

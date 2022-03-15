@@ -1,13 +1,19 @@
 version: "3.4"
 
+networks:
+  monitoring:
+
 services:
   minitweetapi:
     image: minitweetapi
+    container_name: minitwitapi
     build:
       context: ./MinitweetApi
       dockerfile: Dockerfile
     ports:
-      - "8080:80"
+      - "8000:80"
+    networks: 
+      - monitoring
 
   minitwitfrontend:
     image: minitwitfrontend
@@ -16,14 +22,23 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5000:80"
+    networks:
+      - monitoring
 
   prometheus:
     image: prom/prometheus
     container_name: prometheus
     ports:
       - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    networks:
+      - monitoring
 
   grafana:
     image: grafana/grafana:4.5.2
     ports:
       - "3000:3000"
+    networks:
+      - monitoring
+      

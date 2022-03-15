@@ -28,13 +28,21 @@ jobs:
           context: "{{defaultContext}}:MinitwitFrontend/MinitwitFrontend"
           push: true
           tags: registry.digitalocean.com/devopsitu/minitwitfrontend:latest
-      - name: copy file via ssh password
+      - name: copy docker-compose.yml via ssh password
         uses: appleboy/scp-action@master
         with:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           source: "docker-compose.production.yml"
+          target: "/root"
+      - name: copy prometheus file
+        uses: appleboy/scp-action@master
+        with:
+          host: "68.183.67.47"
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          source: "prometheus.yml"
           target: "/root"
       - name: Docker Compose Pull
         uses: appleboy/ssh-action@master
