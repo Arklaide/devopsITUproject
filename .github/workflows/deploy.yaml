@@ -35,25 +35,25 @@ jobs:
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
           source: "docker-compose.production.yml"
-          target: "docker-compose.yml"
+          target: "/root"
       - name: Docker Compose Pull
         uses: appleboy/ssh-action@master
         with:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: docker-compose pull
+          script: docker-compose -f docker-compose.production.yml pull
       - name: Docker compose down
         uses: appleboy/ssh-action@master
         with:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: docker-compose down
+          script: docker-compose -f docker-compose.production.yml down
       - name: Docker-compose up
         uses: appleboy/ssh-action@master
         with:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: docker-compose up --env-file .env
+          script: docker-compose -f docker-compose.production.yml --env-file .env up -d
