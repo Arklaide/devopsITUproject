@@ -40,6 +40,12 @@ counter.Inc();
 app.UseMetricServer();
 app.UseHttpMetrics();
 
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapMetrics();
+});
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -1,6 +1,7 @@
 ﻿#nullable disable
 using Microsoft.AspNetCore.Mvc;
 using MInitweetApi.Models;
+using Prometheus;
 
 namespace MInitweetApi.Controllers
 {
@@ -11,6 +12,13 @@ namespace MInitweetApi.Controllers
         private readonly DatabaseContext _context;
         private readonly IUserRepository _userRepository;
         private readonly IUtilityRepository _utilityRepository;
+        
+        // metrics
+        private static readonly Counter RegistrationCounter = 
+            Metrics.CreateCounter("registratition_counter", "Number of created registrations");
+        
+        private static readonly Counter LoginCounter = 
+            Metrics.CreateCounter("login_counter", "Number of logged in users");
 
         public UsersController(DatabaseContext context, IUserRepository userRepository, IUtilityRepository utilityRepository)
         {
@@ -32,6 +40,7 @@ namespace MInitweetApi.Controllers
             var created = _userRepository.registerUser(u);
             if (!created) return BadRequest();
             _utilityRepository.PutLatest(latest);
+            RegistrationCounter.Inc();
             return NoContent();
         }
 
@@ -40,6 +49,7 @@ namespace MInitweetApi.Controllers
         {
 
             var user = _context.User.Where(u => u.username == username).FirstOrDefault();
+            LoginCounter.Inc();
             return user;
         }
 
