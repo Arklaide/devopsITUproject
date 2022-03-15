@@ -1,10 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using MInitweetApi.Models;
-using Mcrio.Configuration.Provider.Docker.Secrets;
+using Prometheus;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+DotNetEnv.Env.TraversePath().Load();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -14,16 +15,23 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IUtilityRepository, UtilityRepository>();
 
-
-
 var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true).AddEnvironmentVariables().Build();
 builder.Services.AddDbContextFactory<DatabaseContext>(options =>
 {
     options.UseNpgsql(config.GetConnectionString("myDb1"));
 });
 
-
 var app = builder.Build();
+
+// Use the Prometheus middleware
+app.UseMetricServer();
+app.UseHttpMetrics();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapMetrics();
+});
 
 
 // Configure the HTTP request pipeline.

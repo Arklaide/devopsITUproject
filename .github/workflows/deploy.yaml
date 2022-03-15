@@ -16,39 +16,52 @@ jobs:
         run: doctl registry login
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
-      - name: Build and push
+      - name: Build and push api
         uses: docker/build-push-action@v2
         with:
           context: "{{defaultContext}}:MinitweetApi"
           push: true
           tags: registry.digitalocean.com/devopsitu/minitwitapi:latest
-          secrets: |
-            "ConnectionStrings__myDb1=${{ secrets.DBCONSTRING }}"
-      - name: Docker pull
+      - name: Build and push frontend
+        uses: docker/build-push-action@v2
+        with:
+          context: "{{defaultContext}}:MinitwitFrontend/MinitwitFrontend"
+          push: true
+          tags: registry.digitalocean.com/devopsitu/minitwitfrontend:latest
+      - name: copy docker-compose.yml via ssh password
+        uses: appleboy/scp-action@master
+        with:
+          host: "68.183.67.47"
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          source: "docker-compose.production.yml"
+          target: "/root"
+      - name: copy prometheus file
+        uses: appleboy/scp-action@master
+        with:
+          host: "68.183.67.47"
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          source: "prometheus.yml"
+          target: "/root"
+      - name: Docker Compose Pull
         uses: appleboy/ssh-action@master
         with:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: docker pull registry.digitalocean.com/devopsitu/minitwitapi:latest
-      - name: Docker stop all
+          script: docker-compose -f docker-compose.production.yml pull
+      - name: Docker compose down
         uses: appleboy/ssh-action@master
         with:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: docker stop $(docker ps -q) || true
-      - name: Docker remove all
+          script: docker-compose -f docker-compose.production.yml down
+      - name: Docker-compose up
         uses: appleboy/ssh-action@master
         with:
           host: "68.183.67.47"
           username: ${{ secrets.USERNAME }}
           password: ${{ secrets.PASSWORD }}
-          script: docker rm $(docker ps -a -q) || true
-      - name: Docker run
-        uses: appleboy/ssh-action@master
-        with:
-          host: "68.183.67.47"
-          username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
-          script: docker run -e "ConnectionStrings__myDb1=${{ secrets.DBCONSTRING }}" -d -p 8000:80 --name minitwitapi registry.digitalocean.com/devopsitu/minitwitapi:latest
+          script: docker-compose -f docker-compose.production.yml --env-file .env up -d
