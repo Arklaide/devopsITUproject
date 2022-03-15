@@ -6,7 +6,7 @@ networks:
 services:
   minitweetapi:
     image: registry.digitalocean.com/devopsitu/minitwitapi:latest
-    container_name: minitwitapi
+    container_name: minitwitapicontainer
     env_file:
       - .env
     ports:
