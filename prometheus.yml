@@ -19,4 +19,4 @@ scrape_configs:
   - job_name: "itu-minitwit"
     metrics_path: "/metrics"
     static_configs:
-      - targets: ["minitwitapicontainer:80"]
+      - targets: ["apicontainer:80"]
