@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinitweetApi", "MinitweetAp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MinitwitFrontend", "MinitwitFrontend\MinitwitFrontend\MinitwitFrontend.csproj", "{F2F04316-AE2A-4069-B8F2-736B0EE88D11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MinitweetApiTests", "MinitweetApiTests\MinitweetApiTests.csproj", "{C6780D87-3BE2-4BE0-A21F-2F995FDBCB85}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{F2F04316-AE2A-4069-B8F2-736B0EE88D11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F2F04316-AE2A-4069-B8F2-736B0EE88D11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F2F04316-AE2A-4069-B8F2-736B0EE88D11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6780D87-3BE2-4BE0-A21F-2F995FDBCB85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6780D87-3BE2-4BE0-A21F-2F995FDBCB85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6780D87-3BE2-4BE0-A21F-2F995FDBCB85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6780D87-3BE2-4BE0-A21F-2F995FDBCB85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
