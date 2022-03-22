@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MInitweetApi.Models;
+using Serilog;
 
 namespace MInitweetApi.Controllers
 {
@@ -16,13 +17,13 @@ namespace MInitweetApi.Controllers
             _context = context;
             _messageRepository = messageRepository;
             _utilityRepository = utilityRepository;
-
         }
 
         [HttpGet]
         [Route("/public")]
         public async Task<IActionResult> PublicTimeline()
         {
+            Log.Information("Public Get - this is a nice test");
             return new OkObjectResult(_messageRepository.getPublicTimeline());
         }
 
