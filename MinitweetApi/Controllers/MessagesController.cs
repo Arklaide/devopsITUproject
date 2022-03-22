@@ -10,19 +10,21 @@ namespace MInitweetApi.Controllers
         private readonly DatabaseContext _context;
         private readonly IMessageRepository _messageRepository;
         private readonly IUtilityRepository _utilityRepository;
+        private readonly ILogger _logger;
 
-        public MessagesController(DatabaseContext context, IMessageRepository messageRepository, IUtilityRepository utilityRepository)
+        public MessagesController(DatabaseContext context, IMessageRepository messageRepository, IUtilityRepository utilityRepository, ILogger logger)
         {
             _context = context;
             _messageRepository = messageRepository;
             _utilityRepository = utilityRepository;
-
+            _logger = logger;
         }
 
         [HttpGet]
         [Route("/public")]
         public async Task<IActionResult> PublicTimeline()
         {
+            _logger.LogInformation("Public Get - this is a nice test");
             return new OkObjectResult(_messageRepository.getPublicTimeline());
         }
 
