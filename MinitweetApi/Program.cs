@@ -37,7 +37,6 @@ builder.Services.AddDbContextFactory<DatabaseContext>(options =>
 });
 
 var app = builder.Build();
-
 // Use the Prometheus middleware
 app.UseRouting();
 // app.UseCors(MyAllowSpecificOrigins);
