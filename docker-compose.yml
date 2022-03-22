@@ -2,6 +2,8 @@ version: "3.4"
 
 networks:
   monitoring:
+  elastic:
+    driver: bridge
 
 services:
   minitweetapi:
@@ -41,7 +43,6 @@ services:
       - "3000:3000"
     networks:
       - monitoring
-  services:
 
   elasticsearch:
     container_name: elasticsearch
@@ -69,10 +70,6 @@ services:
       - ELASTICSEARCH_URL=http://localhost:9200
     networks:
       - elastic
-
-  networks:
-    elastic:
-      driver: bridge
 
 volumes:
   elasticsearch-data:
