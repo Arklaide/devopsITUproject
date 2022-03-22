@@ -53,13 +53,5 @@ namespace MInitweetApi.Controllers
             return user;
         }
 
-
-        public class Userdto
-        {
-            public string username { get; set; }
-            public string email { get; set; }
-            public string pwd { get; set; }
-        }
-
     }
 }
