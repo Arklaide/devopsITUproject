@@ -7,7 +7,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
       - name: Setup .NET Core SDK 6.0.x
         uses: actions/setup-dotnet@v1.7.2
         with:
@@ -18,6 +21,27 @@ jobs:
         run: dotnet build --configuration Release --no-restore
       - name: Test
         run: dotnet test --no-restore --verbosity normal
+      - name: Run .NET Code Analysis
+        uses: dotnet/code-analysis@v1
+        id: code-analysis
+        with:
+          build-breaking: true
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Build a Docker image
+        run: docker build -f ./MinitweetApi/Dockerfile -t your/image-to-test .
+      - name: Run Snyk to check Docker image for vulnerabilities
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: your/image-to-test
+      - name: Lint Code Base
+        uses: github/super-linter@v4
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          DEFAULT_BRANCH: main
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   build_docker_image:
     runs-on: ubuntu-latest
     steps:
