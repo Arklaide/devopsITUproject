@@ -2,7 +2,12 @@ Service-Level Agreement
 This service-level agreement (SLA) describes the level of support that you should expect.
 
 Uptime
-95%+ uptime
+"Back-off" - The customer is responsible for waiting for a satisfactory time period before issuing an issue/complaint. This time period starts at 2 sec and increases exponentially.
+
+| MUP         | Sweetener   |
+| ----------- | ----------- |
+| 99.9% - 99% | You receive good karma  |
+| 99% - 95% | An official apology from Group I if you want to have it 
 
 The packages build successfully, and have their tests pass at least 95% of the time in a year.
 
