@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MinitwitFrontend.Models;
+using MinitwitFrontend.Services;
 using MinitwitFrontend.Shared;
 using System;
 using System.Collections.Generic;
@@ -23,17 +24,8 @@ namespace MinitwitFrontend.Pages
         [Inject]
         private HttpClient _httpClient { get; set; }
    
-        protected async void OnValidSubmit()
+        public async void OnValidSubmit()
         {
-            //try
-            //{
-            //    var response = await _httpClient.GetFromJsonAsync<Object>("public");
-            //}
-            //catch (Exception e)
-            //{
-            //    throw new Exception(e.Message);
-            //}
-
          
             var results = await LoginState.LoginUser(user);
          
@@ -49,12 +41,12 @@ namespace MinitwitFrontend.Pages
         }
         protected override async Task OnInitializedAsync()
         {
+            
             if (LoginState.isAuthenticated)
             {
                 NavigationManager.NavigateTo("/");
             }
             LoginState.OnAuthenticationChanged += StateHasChanged;
-
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MinitwitFrontend.Models;
+using MinitwitFrontend.Services;
 using MinitwitFrontend.Shared;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace MinitwitFrontend.Pages
         protected List<Message> twits { get; set; }
         protected Message twit = new Message();
         protected bool showShareSuccesfulMessage { get; set; }
+
 
         protected override void OnParametersSet()
         {
@@ -64,6 +66,8 @@ namespace MinitwitFrontend.Pages
             //}
 
             showShareSuccesfulMessage = false;
+
+
             //fake list remove later
             twits = new List<Message>();
             var demoTwit1 = new Message();

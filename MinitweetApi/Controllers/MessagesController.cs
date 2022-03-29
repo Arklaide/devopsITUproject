@@ -24,7 +24,8 @@ namespace MInitweetApi.Controllers
         public async Task<IActionResult> PublicTimeline()
         {
             Log.Information("Public Get - this is a nice test");
-            return new OkObjectResult(_messageRepository.getPublicTimeline());
+            return Ok(await _messageRepository.getPublicTimeline());
+            //return new OkObjectResult(_messageRepository.getPublicTimeline());
         }
 
         [HttpGet]

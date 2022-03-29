@@ -30,6 +30,21 @@ builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IUtilityRepository, UtilityRepository>();
 
 
+
+builder.Services.AddCors(o =>
+{
+    o.AddDefaultPolicy(builder =>
+    {
+        //    var origins = "https://localhost:44308;http://localhost:44308";
+
+        builder.AllowCredentials();
+        builder.SetIsOriginAllowed(origin => true);
+        builder.AllowAnyMethod();
+        builder.AllowAnyHeader();
+    });
+});
+
+
 var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true).AddEnvironmentVariables().Build();
 builder.Services.AddDbContextFactory<DatabaseContext>(options =>
 {
@@ -42,6 +57,8 @@ app.UseRouting();
 // app.UseCors(MyAllowSpecificOrigins);
 app.UseMetricServer();
 app.UseHttpMetrics();
+app.UseHttpsRedirection();
+app.UseCors();
 
 app.UseEndpoints(endpoints =>
 {

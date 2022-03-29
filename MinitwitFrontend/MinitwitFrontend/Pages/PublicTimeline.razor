@@ -3,6 +3,11 @@
 
 <h1 style="font-size: 28px; margin-bottom: 20px;">Public Timeline</h1>
 
+@if (isLoading)
+{
+    <div>Loading</div>
+}
+else {
 @foreach (var twit in twits)
 { 
 <div class="twit-container">
@@ -11,7 +16,8 @@
     </div>
     <div class="name-date-container">
         <div class="name-twit-displayed">
-            <b> <u> <a class="clickable-href" @onclick="() => GoToUserProfile(twit.user.user_Id)"> @twit.user.username </a> </u> </b> @twit.text
+            @*<b> <u> <a class="clickable-href" @onclick="() => GoToUserProfile(twit.user.user_Id)"> @twit.user.username </a> </u> </b> @twit.text*@
+            <b> <u> <a class="clickable-href"> </a> </u> </b> @twit.text
         </div>
         <div class="date">
             @twit.pub_date
@@ -19,5 +25,7 @@
     </div>
 </div>
 }
+}
+
 
 
