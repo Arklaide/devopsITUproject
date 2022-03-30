@@ -2,8 +2,11 @@ on:
   push:
     branches:
       - main
+    
 
 name: Create Release
+
+NEW_TAG="$VNUM1.$VNUM2.$VNUM3"
 
 jobs:
   build:
@@ -18,7 +21,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${CI_COMMIT_SHORT_SHA}
+          #get highest tag number
+          VERSION=`git describe --abbrev=0 --tags`
+          #replace . with space so can split into an array
+          VERSION_BITS=(${VERSION//./ })
+          #get number parts and increase last one by 1
+          VNUM1=${VERSION_BITS[0]}
+          VNUM2=${VERSION_BITS[1]}
+          VNUM3=${VERSION_BITS[2]}
+          VNUM3=$((VNUM3+1))
+          tag_name: NEW_TAG
           release_name: Release ${{ github.ref }}
           body: |
             Release on push
