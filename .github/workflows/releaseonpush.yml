@@ -21,16 +21,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          #get highest tag number
-          VERSION=`git describe --abbrev=0 --tags`
-          #replace . with space so can split into an array
-          VERSION_BITS=(${VERSION//./ })
-          #get number parts and increase last one by 1
-          VNUM1=${VERSION_BITS[0]}
-          VNUM2=${VERSION_BITS[1]}
-          VNUM3=${VERSION_BITS[2]}
-          VNUM3=$((VNUM3+1))
-          tag_name: NEW_TAG
+          tag_name: "Release"::$(date +%s)"
           release_name: Release ${{ github.ref }}
           body: |
             Release on push
