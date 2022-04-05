@@ -20,6 +20,12 @@ namespace MinitwitFrontend.Services
             var subscriptions = await _client.GetFromJsonAsync<IEnumerable<Message>>("/public");
             return subscriptions;
         }
+        public async Task<IEnumerable<Message>> GetAllPrivateTwits(string username)
+        {
+            username = "Luciana Kan";
+            var subscriptions = await _client.GetFromJsonAsync<IEnumerable<Message>>($"msgs/{username}");
+            return subscriptions;
+        }
     }
 
 }

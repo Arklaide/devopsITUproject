@@ -15,6 +15,8 @@ namespace MinitwitFrontend.Pages
         LoginState LoginState { get; set; }
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+
+        [Inject] protected IMessageService MessageService { get; set; }
         protected User user;
         protected bool loading;
         protected List<Message> twits { get; set; }
@@ -22,13 +24,19 @@ namespace MinitwitFrontend.Pages
         protected bool showShareSuccesfulMessage { get; set; }
 
 
-        protected override void OnParametersSet()
+        protected override async void OnParametersSet()
         {
             if (!LoginState.isAuthenticated)
             {
                 NavigationManager.NavigateTo("/public-timeline");
             }
             user = LoginState.loggedInUser;
+            twits = (await MessageService.GetAllPrivateTwits(user.username)).ToList();
+            foreach (var twit in twits)
+            {
+                Console.WriteLine(twit.text);
+            }
+            StateHasChanged();
         }
 
         protected async void OnShareTwit()

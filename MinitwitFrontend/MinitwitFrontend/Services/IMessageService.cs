@@ -7,6 +7,7 @@ namespace MinitwitFrontend.Services
     public interface IMessageService
     {
         Task<IEnumerable<Message>> GetAllPublicTwits();
+        Task<IEnumerable<Message>> GetAllPrivateTwits(string username);
     }
 }
 
