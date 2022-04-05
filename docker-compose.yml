@@ -1,9 +1,5 @@
 version: "3.4"
 
-networks:
-  minitwitnetwork:
-    driver: bridge
-
 services:
   minitweetapi:
     image: minitweetapi
@@ -70,9 +66,13 @@ services:
     depends_on:
       - elasticsearch
     environment:
-      - ELASTICSEARCH_URL=http://elasticsearch:9200
+      - ELASTICSEARCH_URL=http://localhost:9200
     networks:
       - minitwitnetwork
+
+networks:
+  minitwitnetwork:
+    driver: bridge
 
 volumes:
   elasticsearch-data:
