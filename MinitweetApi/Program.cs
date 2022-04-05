@@ -1,17 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using MInitweetApi.Models;
 using Prometheus;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using System.Reflection;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
-using Serilog;
-using Serilog.Sinks.Elasticsearch;
-using System;
-using System.Reflection;
 using Serilog.Exceptions;
+using Serilog.Formatting.Elasticsearch;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,6 +34,7 @@ var app = builder.Build();
 // Use the Prometheus middleware
 app.UseRouting();
 // app.UseCors(MyAllowSpecificOrigins);
+app.UseAuthorization();
 app.UseMetricServer();
 app.UseHttpMetrics();
 
@@ -57,8 +52,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
-app.UseAuthorization();
 
 app.MapControllers();
 
@@ -84,7 +77,7 @@ void ConfigureLogging()
         .ReadFrom.Configuration(configuration)
         .CreateLogger();
 }
-Log.Information("Program.cs loaded to elasticSearch");
+
 
 ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment)
 {

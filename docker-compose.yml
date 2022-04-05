@@ -1,9 +1,5 @@
 version: "3.4"
 
-networks:
-  minitwitnetwork:
-    driver: bridge
-
 services:
   minitweetapi:
     image: minitweetapi
@@ -51,7 +47,7 @@ services:
     container_name: elasticsearch
     image: docker.elastic.co/elasticsearch/elasticsearch:7.9.2
     ports:
-      - 9200:9200
+      - "9200:9200"
     volumes:
       - elasticsearch-data:/usr/share/elasticsearch/data
     environment:
@@ -66,13 +62,17 @@ services:
     container_name: kibana
     image: docker.elastic.co/kibana/kibana:7.9.2
     ports:
-      - 5601:5601
+      - "5601:5601"
     depends_on:
       - elasticsearch
     environment:
-      - ELASTICSEARCH_URL=http://localhost:9200
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
     networks:
       - minitwitnetwork
+
+networks:
+  minitwitnetwork:
+    driver: bridge
 
 volumes:
   elasticsearch-data:
