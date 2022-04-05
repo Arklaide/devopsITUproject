@@ -5,6 +5,7 @@ using Serilog;
 using Serilog.Sinks.Elasticsearch;
 using Serilog.Exceptions;
 using Serilog.Formatting.Elasticsearch;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ var app = builder.Build();
 // Use the Prometheus middleware
 app.UseRouting();
 // app.UseCors(MyAllowSpecificOrigins);
+app.UseAuthorization();
 app.UseMetricServer();
 app.UseHttpMetrics();
 
@@ -51,8 +53,6 @@ if (app.Environment.IsDevelopment())
 }
 
 
-app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
@@ -62,6 +62,9 @@ void ConfigureLogging()
     var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
     var configuration = new ConfigurationBuilder()
         .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .AddJsonFile(
+            $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
+            optional: true)
         .Build();
 
     Log.Logger = new LoggerConfiguration()
@@ -74,7 +77,6 @@ void ConfigureLogging()
         .ReadFrom.Configuration(configuration)
         .CreateLogger();
 }
-Log.Information("Program.cs loaded to elasticSearch");
 
 
 ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment)
@@ -82,8 +84,7 @@ ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, 
     return new ElasticsearchSinkOptions(new Uri(configuration["ElasticConfiguration:Uri"]))
     {
         AutoRegisterTemplate = true,
-        AutoRegisterTemplateVersion = AutoRegisterTemplateVersion.ESv7,
-        CustomFormatter = new ElasticsearchJsonFormatter()
+        IndexFormat = $"{Assembly.GetExecutingAssembly().GetName().Name.ToLower().Replace(".", "-")}-{environment?.ToLower().Replace(".", "-")}-{DateTime.UtcNow:yyyy-MM}"
     };
 }
 
