@@ -1,7 +1,7 @@
 version: "3.4"
 
 networks:
-  elastic:
+  minitwitnetwork:
     driver: bridge
 
 services:
@@ -13,14 +13,14 @@ services:
     ports:
       - "8000:80"
     networks:
-      - elastic
+      - minitwitnetwork
 
   minitwitfrontend:
     image: registry.digitalocean.com/devopsitu/minitwitfrontend:latest
     ports:
       - "5000:80"
     networks:
-      - elastic
+      - minitwitnetwork
 
   prometheus:
     image: prom/prometheus
@@ -30,7 +30,7 @@ services:
     volumes:
       - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
     networks:
-      - elastic
+      - minitwitnetwork
 
   grafana:
     image: grafana/grafana:4.5.2
@@ -39,7 +39,7 @@ services:
     ports:
       - "3000:3000"
     networks:
-      - elastic
+      - minitwitnetwork
 
   elasticsearch:
     container_name: elasticsearch
@@ -54,7 +54,7 @@ services:
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - discovery.type=single-node
     networks:
-      - elastic
+      - minitwitnetwork
 
   kibana:
     container_name: kibana
@@ -66,7 +66,7 @@ services:
     environment:
       - ELASTICSEARCH_URL=http://localhost:9200
     networks:
-      - elastic
+      - minitwitnetwork
 
 volumes:
   elasticsearch-data:

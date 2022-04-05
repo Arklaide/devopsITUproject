@@ -101,6 +101,7 @@ void ConfigureLogging()
         .ReadFrom.Configuration(configuration)
         .CreateLogger();
 }
+Log.Information("Program.cs loaded to elasticSearch");
 
 ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment)
 {
