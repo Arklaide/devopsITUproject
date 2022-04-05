@@ -1,16 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using MInitweetApi.Models;
 using Prometheus;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using System.Reflection;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
-using Serilog;
-using Serilog.Sinks.Elasticsearch;
-using System;
-using System.Reflection;
 using Serilog.Exceptions;
 using Serilog.Formatting.Elasticsearch;
 
@@ -83,6 +75,7 @@ void ConfigureLogging()
         .CreateLogger();
 }
 Log.Information("Program.cs loaded to elasticSearch");
+
 
 ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment)
 {
