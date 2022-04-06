@@ -34,8 +34,8 @@ namespace MinitwitFrontend.Shared
 
             //}
             loggedInUser = new User();
-            loggedInUser.username = "Harpa";
-            loggedInUser.email = "harpa@harps.is";
+            loggedInUser.username = user.username;
+            loggedInUser.email = user.email;
             var demomessage = new Message()
             {
                 text = "demotext",
@@ -84,7 +84,9 @@ namespace MinitwitFrontend.Shared
             //listofdemomessages.Add(demomessage);
             //loggedInUser.messages = listofdemomessages; 
             //loggedInUser.user_Id = 1;
-     
+
+
+            //loggedInUser = User;
             //isAuthenticated = true;
 
 

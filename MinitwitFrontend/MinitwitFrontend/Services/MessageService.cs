@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using MinitwitFrontend.Models;
+using Newtonsoft.Json;
 
 namespace MinitwitFrontend.Services
 {
@@ -22,9 +24,16 @@ namespace MinitwitFrontend.Services
         }
         public async Task<IEnumerable<Message>> GetAllPrivateTwits(string username)
         {
-            username = "Luciana Kan";
             var subscriptions = await _client.GetFromJsonAsync<IEnumerable<Message>>($"msgs/{username}");
             return subscriptions;
+        }
+        public async Task<bool> CreateATwit(Stringwrapper twit, string userName)
+        {
+            var saveResults = await _client.PostAsync($"msgs/{userName}", new StringContent(JsonConvert.SerializeObject(twit), Encoding.UTF8, "application/json"));
+            if (saveResults.IsSuccessStatusCode)
+                return true;
+            else
+                return false;
         }
     }
 

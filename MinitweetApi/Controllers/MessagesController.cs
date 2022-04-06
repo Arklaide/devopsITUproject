@@ -42,7 +42,7 @@ namespace MInitweetApi.Controllers
 
             if (!_messageRepository.newMessage(username, sw.content))
             {
-                 _utilityRepository.PutLatest(latest);
+                // _utilityRepository.PutLatest(latest);
                 return StatusCode(403);
             }
             return NoContent();
@@ -55,7 +55,7 @@ namespace MInitweetApi.Controllers
         {
 
             var messages = await _messageRepository.GetUserTimeline(username);
-            _utilityRepository.PutLatest(latest);
+            //_utilityRepository.PutLatest(latest);
             if (messages == null) return NoContent();
             return Ok(messages);
         }

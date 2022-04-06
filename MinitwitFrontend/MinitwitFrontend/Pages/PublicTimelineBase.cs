@@ -36,39 +36,9 @@ namespace MinitwitFrontend.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            var loggedInUser = new User();
-            loggedInUser.username = "Harpa";
-            loggedInUser.email = "harpa@harps.is";
-            var demomessage = new Message()
-            {
-                text = "demotext",
-                author_id = 1,
-                flagged = true,
-                message_Id = 1,
-                pub_date = DateTime.Today,
-                user = loggedInUser
-            };
-            var listofdemomessages = new List<Message>();
-            listofdemomessages.Add(demomessage);
-            loggedInUser.messages = listofdemomessages; 
-            loggedInUser.user_Id = 1;
            
-            
             isLoading = false;
             StateHasChanged();
-        
-        //    twits = new List<Message>();
-        //    var test = new Message()
-        //    {
-        //        text = "demotext",
-        //        author_id = 1,
-        //        flagged = true,
-        //        message_Id = 1,
-        //        pub_date = DateTime.Today,
-        //        user = loggedInUser
-        //    };
-        //twits.Add(test);
-
 
         }
         protected void GoToUserProfile(int userId)

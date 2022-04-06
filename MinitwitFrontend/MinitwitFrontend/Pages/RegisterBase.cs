@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MinitwitFrontend.Models;
+using MinitwitFrontend.Services;
 using MinitwitFrontend.Shared;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ namespace MinitwitFrontend.Pages
         private HttpClient _httpClient { get; set; }
         protected string pwd1 {get; set;}
         protected string pwd2 {get; set;}
+        [Inject]
+        protected IUserService UserService { get; set; }
 
         protected async void OnValidSubmit()
         {
@@ -36,19 +39,19 @@ namespace MinitwitFrontend.Pages
                 StateHasChanged();
                 return;
             }
-            var results = await LoginState.RegisterUser(user);
 
-            StateHasChanged();
-            if (results)
+
+            var httpResultError = await UserService.RegisterUser(user);
+            if (!string.IsNullOrEmpty(httpResultError))
             {
-                NavigationManager.NavigateTo("/login");
-            }
-            else
-            {
-                errorText = "We could not register";
-                StateHasChanged();
+                errorText = httpResultError;
                 return;
             }
+
+            //var results = await LoginState.RegisterUser(user);
+
+            NavigationManager.NavigateTo("/login");
+            
         }
         protected override async Task OnInitializedAsync()
         {

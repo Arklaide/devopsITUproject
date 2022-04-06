@@ -23,10 +23,17 @@ namespace MinitwitFrontend.Pages
         LoginState LoginState { get; set; }
         [Inject]
         private HttpClient _httpClient { get; set; }
-   
+        [Inject]
+        protected IUserService UserService { get; set; }
+
         public async void OnValidSubmit()
         {
-         
+            user = await UserService.LoginUser(user.username);
+            if (user == null)
+            {
+                errorText = "Could not log you in.";
+                return;
+            }
             var results = await LoginState.LoginUser(user);
          
             StateHasChanged();

@@ -15,7 +15,7 @@ public class MessageRepository : IMessageRepository
         throw new NotImplementedException();
     }
 
-    public async Task<IEnumerable<Message>> getPublicTimeline()
+    public async Task<IEnumerable<Message>> getPublicTimeline() 
     {
         var messages = _context.Message.Where(u => !u.flagged).Take(10);
         return messages;
