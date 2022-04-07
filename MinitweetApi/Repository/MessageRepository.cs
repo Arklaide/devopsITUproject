@@ -17,14 +17,39 @@ public class MessageRepository : IMessageRepository
 
     public async Task<IEnumerable<Message>> getPublicTimeline() 
     {
-        var messages = _context.Message.Where(u => !u.flagged).Take(200);
-        return messages;
+        //var messages = _context.Message.Where(u => !u.flagged).Take(200);
+        var m = from p in _context.Message.Where(u => !u.flagged).Take(200)
+                join l in _context.User
+                          on p.author_id equals l.user_Id into g
+                from l in g.DefaultIfEmpty()
+                select new Message
+                {
+                    text = p.text,
+                    pub_date = p.pub_date,
+                    flagged = p.flagged,
+                    author_id = p.author_id,
+                    user = new User() { email = l.email, user_Id = l.user_Id, username = l.username }
+                };
+        return m.ToList();
+        //return messages;
     }
 
     public async Task<IEnumerable<Message>> GetUserTimeline(string username)
     {
-        var m =  _context.Message.Where(u => u.user.username == username).ToList();
-        return m;
+        //var m =  _context.Message.Where(u => u.user.username == username).Join().ToList();
+        var m = from p in _context.Message.Where(u => u.user.username == username)
+                    join l in _context.User
+                              on p.author_id equals l.user_Id into g
+                            from l in g.DefaultIfEmpty()
+                            select new Message
+                            {
+                                text = p.text,
+                                pub_date = p.pub_date,
+                                flagged = p.flagged,
+                                author_id = p.author_id,
+                                user = new User() { email = l.email, user_Id = l.user_Id, username = l.username}
+                            };
+        return m.ToList();
     }
 
     public bool newMessage(string username, string message)
