@@ -5,26 +5,25 @@
 
 @if (isLoading)
 {
-    <div>Loading</div>
+    <div class="spinner">Loading...</div>
 }
 else {
-@foreach (var twit in twits)
-{ 
-<div class="twit-container">
-    <div class="twit-pic-container">
+    @foreach (var twit in twits)
+    { 
+        <div class="twit-container">
+            <div class="twit-pic-container">
         
-    </div>
-    <div class="name-date-container">
-        <div class="name-twit-displayed">
-            @*<b> <u> <a class="clickable-href" @onclick="() => GoToUserProfile(twit.user.user_Id)"> @twit.user.username </a> </u> </b> @twit.text*@
-            <b> <u> <a class="clickable-href"> </a> </u> </b> @twit.text
+            </div>
+            <div class="name-date-container">
+                <div class="name-twit-displayed">
+                    <b> <u> <a class="clickable-href" @onclick="() => GoToUserProfile(twit.author_id)"> @twit.author_id </a> </u> </b> @twit.text
+                </div>
+                <div class="date">
+                    @twit.pub_date
+                </div>
+            </div>
         </div>
-        <div class="date">
-            @twit.pub_date
-        </div>
-    </div>
-</div>
-}
+    }
 }
 
 

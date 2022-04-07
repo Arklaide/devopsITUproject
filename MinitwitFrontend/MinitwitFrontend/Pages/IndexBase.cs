@@ -18,7 +18,7 @@ namespace MinitwitFrontend.Pages
 
         [Inject] protected IMessageService MessageService { get; set; }
         protected User user;
-        protected bool loading = true;
+        protected bool isLoading = true;
         protected List<Message> twits { get; set; }
         protected Message twit = new Message();
         protected bool showShareSuccesfulMessage { get; set; }
@@ -38,13 +38,13 @@ namespace MinitwitFrontend.Pages
                 twit.user = user;
             }
             //twits = new List<Message>();
-            loading = false;
+            isLoading = false;
             StateHasChanged();
         }
 
         protected async void OnShareTwit()
         {
-            loading = true;
+            isLoading = true;
             StateHasChanged();
 
             Stringwrapper currentTwit = new Stringwrapper();
@@ -64,8 +64,8 @@ namespace MinitwitFrontend.Pages
             {
                 showShareSuccesfulMessage = false;
             }
-           
-            loading = false;
+
+            isLoading = false;
             StateHasChanged();
             await Task.CompletedTask;
         }

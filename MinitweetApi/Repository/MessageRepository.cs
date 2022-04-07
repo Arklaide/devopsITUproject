@@ -17,7 +17,7 @@ public class MessageRepository : IMessageRepository
 
     public async Task<IEnumerable<Message>> getPublicTimeline() 
     {
-        var messages = _context.Message.Where(u => !u.flagged).Take(10);
+        var messages = _context.Message.Where(u => !u.flagged).Take(200);
         return messages;
     }
 

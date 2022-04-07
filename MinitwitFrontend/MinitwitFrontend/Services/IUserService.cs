@@ -8,6 +8,7 @@ namespace MinitwitFrontend.Services
     {
         Task<string> RegisterUser(Userdto user);
         Task<Userdto> LoginUser(string username);
+        Task<Userdto> GetUserInfo(int userId);
     }
 }
 

@@ -14,7 +14,7 @@ namespace MinitwitFrontend.Pages
     public class LoginBase : ComponentBase
     {
         protected Userdto user = new Userdto();
-        protected bool loading;
+        protected bool isLoading = true;
         protected string errorText = "";
 
         [Inject]
@@ -54,6 +54,7 @@ namespace MinitwitFrontend.Pages
                 NavigationManager.NavigateTo("/");
             }
             LoginState.OnAuthenticationChanged += StateHasChanged;
+            isLoading = false;
         }
     }
 }

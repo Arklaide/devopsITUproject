@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MinitwitFrontend.Models;
+using MinitwitFrontend.Services;
 using MinitwitFrontend.Shared;
 using System;
 using System.Collections.Generic;
@@ -17,26 +18,38 @@ namespace MinitwitFrontend.Pages
         private NavigationManager NavigationManager { get; set; }
         [Inject]
         LoginState LoginState { get; set; }
+
         [Parameter]
         public string UserId { get; set; }
         protected List<Message> twits = new List<Message>();
         protected bool isFollowingUser { get; set; } = false;
-        protected User userThatHasThisProfile;
+        //protected User userThatHasThisProfile;
         protected User currentlyLoggedInUser;
+        protected Userdto UserProfileUser;
         protected bool isSameUser { get; set; } = false;
+        protected bool isLoading { get; set; } = true;
+        [Inject] protected IUserService UserService { get; set; }
+        [Inject] protected IMessageService MessageService { get; set; }
+        [Inject] protected IFollowService FollowService { get; set; }
+
         protected override async Task OnInitializedAsync()
         {
-            //var response = await _httpClient.PostAsJsonAsync<userDto>("publicTwits", userObject);
+            int UserIdInt = 0;
+            bool parseWorked = int.TryParse(UserId, out UserIdInt);
+            if (!parseWorked)
+            {
+                isLoading = false;
+                return;
+            }
+            UserProfileUser = (await UserService.GetUserInfo(UserIdInt));
+            twits = (await MessageService.GetAllPrivateTwits(UserProfileUser.username)).ToList();
+            foreach (var twit in twits)
+            {
+                Console.WriteLine(twit.text);
+            }
+            StateHasChanged();
 
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    isAuthenticated = true;
-            //}
-            //else
-            //{
-            //    isAuthenticated = false;
 
-            //}
             if (LoginState.isAuthenticated)
             {
                 currentlyLoggedInUser = LoginState.loggedInUser;
@@ -52,53 +65,30 @@ namespace MinitwitFrontend.Pages
             }
             else
                 currentlyLoggedInUser = null;
-
-
-            var demoUser = new User();
-            demoUser.username = "Harpa";
-            demoUser.email = "harpa@harps.is";
-            var demomessage = new Message()
-            {
-                text = "demotext",
-                author_id = 1,
-                flagged = true,
-                message_Id = 1,
-                pub_date = DateTime.Today,
-                user = demoUser
-            };
-            var listofdemomessages = new List<Message>();
-            listofdemomessages.Add(demomessage);
-            demoUser.messages = listofdemomessages;
-            demoUser.user_Id = 1;
-
-
-            userThatHasThisProfile = demoUser;
-
-
-            //fake list remove later
-            twits = new List<Message>();
-            var test = new Message()
-            {
-                text = "demotext",
-                author_id = 1,
-                flagged = true,
-                message_Id = 1,
-                pub_date = DateTime.Today,
-                user = demoUser
-            };
-            twits.Add(test);
-
-
+            isLoading = false;
+            StateHasChanged();
         }
         protected async void FollowUser()
         {
-            isFollowingUser = true;
+            isLoading = true;
+
+            FllwDTO followInfo = new FllwDTO();
+            followInfo.follow = UserProfileUser.username;
+            bool result = await(FollowService.followOrUnfollow(followInfo, currentlyLoggedInUser.username));
+            if (result)
+                isFollowingUser = true;
+            isLoading = false;
             StateHasChanged();
             await Task.CompletedTask;
         }
         protected async void UnfollowUser()
         {
-            isFollowingUser = false;
+            FllwDTO followInfo = new FllwDTO();
+            followInfo.unfollow = UserProfileUser.username;
+            bool result = await (FollowService.followOrUnfollow(followInfo, currentlyLoggedInUser.username));
+            if (result)
+                isFollowingUser = false;
+            isLoading = false;
             StateHasChanged();
             await Task.CompletedTask;
 

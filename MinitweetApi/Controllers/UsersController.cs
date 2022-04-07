@@ -48,9 +48,16 @@ namespace MInitweetApi.Controllers
         [Route("login")]
         public async Task<ActionResult<User>> login([FromBody] string username)
         {
-
             var user = _context.User.Where(u => u.username == username).FirstOrDefault();
             LoginCounter.Inc();
+            return user;
+        }
+        [HttpPost]
+        [Route("userinfo")]
+        public async Task<ActionResult<User>> UserInfo([FromBody] int userId)
+        {
+            var user = _context.User.Where(u => u.user_Id == userId).FirstOrDefault();
+         
             return user;
         }
 

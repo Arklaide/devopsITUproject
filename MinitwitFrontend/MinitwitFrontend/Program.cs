@@ -33,6 +33,7 @@ namespace MinitwitFrontend
             builder.Services.AddSingleton<LoginState>();
             builder.Services.AddTransient<IMessageService, MessageService>();
             builder.Services.AddTransient<IUserService, UserService>();
+            builder.Services.AddTransient<IFollowService, FollowService>();
             await builder.Build().RunAsync();
         }
     }

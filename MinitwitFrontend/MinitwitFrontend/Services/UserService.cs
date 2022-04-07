@@ -41,6 +41,20 @@ namespace MinitwitFrontend.Services
 
 
         }
+        public async Task<Userdto> GetUserInfo(int userId)
+        {
+            var saveResults = await _client.PostAsync("userinfo", new StringContent(JsonConvert.SerializeObject(userId), Encoding.UTF8, "application/json"));
+            if (saveResults.IsSuccessStatusCode)
+            { 
+                var respString = await saveResults.Content.ReadAsStringAsync();
+                var user = JsonConvert.DeserializeObject<Userdto>(respString);
+                return user;
+            }
+            else
+                return null;
+
+
+        }
     }
 
 }
