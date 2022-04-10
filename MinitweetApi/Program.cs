@@ -37,10 +37,13 @@ builder.Services.AddCors(o =>
     {
         //    var origins = "https://localhost:44308;http://localhost:44308";
 
-        builder.AllowCredentials();
-        builder.SetIsOriginAllowed(origin => true);
-        builder.AllowAnyMethod();
-        builder.AllowAnyHeader();
+        // builder.AllowCredentials();
+        // builder.SetIsOriginAllowed(origin => true);
+        builder.WithOrigins("http://localhost:5000")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+        // builder.AllowAnyMethod();
+        // builder.AllowAnyHeader();
     });
 });
 
@@ -57,7 +60,7 @@ app.UseRouting();
 // app.UseCors(MyAllowSpecificOrigins);
 app.UseMetricServer();
 app.UseHttpMetrics();
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 app.UseCors();
 
 app.UseEndpoints(endpoints =>

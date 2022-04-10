@@ -28,7 +28,7 @@ namespace MinitwitFrontend
             //});
             builder.Services.AddHttpClient("authorizedClient", (s, c) =>
             {
-                c.BaseAddress = new Uri("https://localhost:7257/");
+                c.BaseAddress = new Uri("http://localhost:8000");
             });
             builder.Services.AddSingleton<LoginState>();
             builder.Services.AddTransient<IMessageService, MessageService>();
