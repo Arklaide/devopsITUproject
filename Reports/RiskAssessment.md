@@ -44,40 +44,65 @@ We use the likelihood and impact definitions as defined by TODO: insert security
 | Medium | Low | Medium | Medium |
 | Low | Low | Low | Low|
 
-| Risk No | Likelihood | Impact | Risk   |
-| ------- | ---------- | ------ | ------ |
-| 1       | Low        | High   | Low    |
-| 2       | High       | High   | High   |
-| 3       | Medium     | High   | Medium |
-| 4       | High       | Medium | Medium |
-| 5       | Low        | High   | Low    |
-| 6       | Medium     | Low    | Low    |
+In the risk analysis, we plot our risk from the assessment with respect to the above matrix in the table below. The table below shows us the risk level of the different risks.
+
+| Risk No | Likelihood | Impact | Risk Level |
+| ------- | ---------- | ------ | ---------- |
+| 1       | Low        | High   | Low        |
+| 2       | High       | High   | High       |
+| 3       | Medium     | High   | Medium     |
+| 4       | High       | Medium | Medium     |
+| 5       | Low        | High   | Low        |
+| 6       | Medium     | Low    | Low        |
+
+The following table describes the possible counter measures from each of the assessed risks.
 
 | Risk No | Counter measure                                                                                                                                                                                                                                                                        |
 | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 1       | Validate and sanitize all user input in asset 2 and validate data sent from asset 2 in asset 3 before accessing the database.                                                                                                                                                          |
 | 2       | Enforce the use of HTTPS and ensure transfer data is encrypted.                                                                                                                                                                                                                        |
-| 3       | Conduct training for team members to ensure security is enforced such as keeping secrets in a manager or in a local environment file. Furthermore, third party entities need to be checked before use. Furthermore, developers should not open unneccesary ports to the outside world. |
+| 3       | Conduct training for team members to ensure security is enforced such as keeping secrets in a manager or in a local environment file. Furthermore, third party entities need to be checked before use. Furthermore, developers should not open unnecessary ports to the outside world. |
 | 4       | There are services which have their ports open to the outside world for easy access for the team. However, these services needs to be secured with safe credentials. Services like Kibana.                                                                                             |
 | 5       | Regularly check vulnerabilities of the ecosystem's dependencies. Update versions if needed and use tools such as Snyk to look for vulnerabilities.                                                                                                                                     |
 | 6       | Users should not be able to identify as others and should only be able to access data belonging to them. The requests should enforce you can't change your own user to e.g. another ID and the code should check if this specific user has access to requested data.                   |
 
-## Continous security checks
+## Continuos security checks
 
-The GitHub repository has Snyk enabled to run regularly security assessment checks as well when creating pull requests. Snyk is a security platform, which we use to find vulnerabilities in our systems. This is also integrated in our contionous integration pipeline for the docker images we create.
+The GitHub repository has Snyk enabled to run regularly security assessment checks as well when creating pull requests. Snyk is a security platform, which we use to find vulnerabilities in our systems. This is also integrated in our continuos integration pipeline for the docker images we create.
 
-Snyk has found the following issuses:
+Snyk has found the following issues:
 
-- CVE-2022-28391 - Affecting our Alpine busybox version for our blazor app
+- CVE-2022-28391 - Affecting our Alpine busybox version for our Blazor app
 - The package DotNetEnv@2.3.0 for our API uses some dependencies which are vulnerable
 - Some encoding seems vulnerable in our system
 
 ## Penetration test
 
+The system, mainly asset 2, has been penetration tested. The following sections shows the results and the according actions needed.
+
 ### Results
+
+Results from tools:
+
+- Metasploit WMAP on Kali has been run and it shows no vulnerabilities
+- Skipfish on Kali has been run and it shows nothing important, but indicates missing charset
+
+Results from manual pentesting:
+
+- The user info API endpoint sends the password in plain text (everyone can see this). This is broken access control, and relates to risk no 6.
+  - The hashing of the passwords seem broken
+  - It is possible to use this data to log in as other users
 
 ### Actions
 
-### Status of logging and monitoring
+The results calls for the following actions to take place as soon as possible:
 
-Can we see the pen test in the logs, if not, our logging is a vulnerability, since we can detect attacks (see owasp top ten)
+- Implement counter measure for risk no 6.
+  - Ensure proper hashing
+  - Ensure proper endpoint security
+  - Ensure no unnecessary data is sent as responses
+- Switch from HTTP to HTTPS for enhanced security
+
+## Status of logging and monitoring
+
+OWASP includes insufficient logging and monitoring as a security risk. The current state of our logging is acceptable, since it is possible to manual see some results from the penetration test, such as tools trying to access config sub-sites. However, nothing is automatic. Furthermore, the monitoring does not give much information, other than a few technical and business related metrics, such as numbers of logins. The security issue concerning risk no 6 that was found, can't be seen with the current logging/monitoring.
