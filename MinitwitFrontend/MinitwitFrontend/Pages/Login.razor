@@ -1,6 +1,13 @@
 ﻿@page "/login"
 @inherits LoginBase
 
+@if (isLoading)
+{    
+    <div class="spinner">Loading...</div>
+}
+
+else
+{
 <div class="card">
     <h4 class="card-header">Login</h4>
     <div class="card-body">
@@ -16,8 +23,8 @@
                 <InputText @bind-Value="user.pwd" type="password" class="form-control" />
                 <ValidationMessage For="@(() => user.pwd)" />
             </div>
-            <button disabled="@loading" class="btn btn-primary">
-                @if (loading)
+            <button disabled="@isLoading" class="btn btn-primary">
+                @if (isLoading)
                 {
                     <span class="spinner-border spinner-border-sm mr-1"></span>
                 }
@@ -28,3 +35,4 @@
     </div>
     <div>@errorText</div>
 </div>
+}

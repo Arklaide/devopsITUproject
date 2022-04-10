@@ -35,6 +35,15 @@ a, .btn-link {
     color: red;
 }
 
+.spinner {
+    display: flex; 
+    flex: 1; 
+    align-items: center; 
+    justify-content: center; 
+    height: calc(100vh - 200px); 
+    font-size: 18px;
+}
+
 #blazor-error-ui {
     background: lightyellow;
     bottom: 0;

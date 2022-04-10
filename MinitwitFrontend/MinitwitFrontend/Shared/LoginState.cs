@@ -22,20 +22,9 @@ namespace MinitwitFrontend.Shared
 
         public async Task<bool> LoginUser(Userdto user)
         {
-            //var response = await _httpClient.PostAsJsonAsync<String>("login", "Harpa");
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    isAuthenticated = true;
-            //}
-            //else
-            //{
-            //    isAuthenticated = false;
-
-            //}
             loggedInUser = new User();
-            loggedInUser.username = "Harpa";
-            loggedInUser.email = "harpa@harps.is";
+            loggedInUser.username = user.username;
+            loggedInUser.email = user.email;
             var demomessage = new Message()
             {
                 text = "demotext",
@@ -55,57 +44,9 @@ namespace MinitwitFrontend.Shared
             return true;
         }
 
-        public async Task<bool> RegisterUser(Userdto user)
-        {
-            //var response = await _httpClient.PostAsJsonAsync<userDto>("login", userObject);
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    isAuthenticated = true;
-            //}
-            //else
-            //{
-            //    isAuthenticated = false;
-
-            //}
-            //loggedInUser = new User();
-            //loggedInUser.username = "Harpa";
-            //loggedInUser.email = "harpa@harps.is";
-            //var demomessage = new Message()
-            //{
-            //    text = "demotext",
-            //    author_id = 1,
-            //    flagged = true,
-            //    message_Id = 1,
-            //    pub_date = DateTime.Today,
-            //    user = loggedInUser
-            //};
-            //var listofdemomessages = new List<Message>();
-            //listofdemomessages.Add(demomessage);
-            //loggedInUser.messages = listofdemomessages; 
-            //loggedInUser.user_Id = 1;
-     
-            //isAuthenticated = true;
-
-
-            NotifyAuthenticationHasChanged();
-            return true;
-        }
-
         public async Task<bool> LogOutUser()
         {
-            //var response = await _httpClient.PostAsJsonAsync<userDto>("login", userObject);
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    isAuthenticated = true;
-            //}
-            //else
-            //{
-            //    isAuthenticated = false;
-
-            //}
-
+            
             isAuthenticated = false;
             loggedInUser = new User();
 
