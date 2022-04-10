@@ -4,7 +4,6 @@ using Prometheus;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
 using Serilog.Exceptions;
-using Serilog.Formatting.Elasticsearch;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,7 +32,7 @@ builder.Services.AddCors(o =>
 
         // builder.AllowCredentials();
         // builder.SetIsOriginAllowed(origin => true);
-        builder.WithOrigins("http://localhost:5000")
+        builder.WithOrigins("http://localhost:5000", "http://68.183.67.47:5000")
         .AllowAnyHeader()
         .AllowAnyMethod();
         // builder.AllowAnyMethod();
