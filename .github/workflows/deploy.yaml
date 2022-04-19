@@ -81,7 +81,7 @@ jobs:
         with:
           host: "164.92.132.67"
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.SSHKEY }}
           source: "prometheus.yml"
           target: "/root"
       - name: Docker Compose Pull
@@ -89,19 +89,19 @@ jobs:
         with:
           host: "164.92.132.67"
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.SSHKEY }}
           script: docker-compose -f docker-compose.production.yml pull
       - name: Docker compose down
         uses: appleboy/ssh-action@master
         with:
           host: "164.92.132.67"
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.SSHKEY }}
           script: docker-compose -f docker-compose.production.yml down
       - name: Docker-compose up
         uses: appleboy/ssh-action@master
         with:
           host: "164.92.132.67"
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.SSHKEY }}
           script: docker stack deploy --compose-file docker-compose.production.yml --env-file .env minitwitswarm
