@@ -2,7 +2,7 @@ version: "3.4"
 
 networks:
   minitwitnetwork:
-    driver: bridge
+    driver: overlay
 
 services:
   minitweetapi:
