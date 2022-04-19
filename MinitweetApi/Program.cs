@@ -1,17 +1,11 @@
 using Microsoft.EntityFrameworkCore;
 using MInitweetApi.Models;
 using Prometheus;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using System.Reflection;
 using Serilog;
 using Serilog.Sinks.Elasticsearch;
-using Serilog;
-using Serilog.Sinks.Elasticsearch;
-using System;
-using System.Reflection;
 using Serilog.Exceptions;
+using Serilog.Formatting.Elasticsearch;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +24,24 @@ builder.Services.AddScoped<IMessageRepository, MessageRepository>();
 builder.Services.AddScoped<IUtilityRepository, UtilityRepository>();
 
 
+
+builder.Services.AddCors(o =>
+{
+    o.AddDefaultPolicy(builder =>
+    {
+        //    var origins = "https://localhost:44308;http://localhost:44308";
+
+        // builder.AllowCredentials();
+        // builder.SetIsOriginAllowed(origin => true);
+        builder.WithOrigins("http://localhost:5000")
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+        // builder.AllowAnyMethod();
+        // builder.AllowAnyHeader();
+    });
+});
+
+
 var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true).AddEnvironmentVariables().Build();
 builder.Services.AddDbContextFactory<DatabaseContext>(options =>
 {
@@ -40,8 +52,11 @@ var app = builder.Build();
 // Use the Prometheus middleware
 app.UseRouting();
 // app.UseCors(MyAllowSpecificOrigins);
+app.UseAuthorization();
 app.UseMetricServer();
 app.UseHttpMetrics();
+// app.UseHttpsRedirection();
+app.UseCors();
 
 app.UseEndpoints(endpoints =>
 {
@@ -57,8 +72,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-
-app.UseAuthorization();
 
 app.MapControllers();
 
@@ -84,6 +97,7 @@ void ConfigureLogging()
         .ReadFrom.Configuration(configuration)
         .CreateLogger();
 }
+
 
 ElasticsearchSinkOptions ConfigureElasticSink(IConfigurationRoot configuration, string environment)
 {

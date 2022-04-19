@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MinitwitFrontend.Models;
+using MinitwitFrontend.Services;
 using MinitwitFrontend.Shared;
 using System;
 using System.Collections.Generic;
@@ -14,32 +15,57 @@ namespace MinitwitFrontend.Pages
         LoginState LoginState { get; set; }
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+
+        [Inject] protected IMessageService MessageService { get; set; }
         protected User user;
-        protected bool loading;
+        protected bool isLoading = true;
         protected List<Message> twits { get; set; }
         protected Message twit = new Message();
         protected bool showShareSuccesfulMessage { get; set; }
 
-        protected override void OnParametersSet()
+
+        protected override async void OnParametersSet()
         {
             if (!LoginState.isAuthenticated)
             {
                 NavigationManager.NavigateTo("/public-timeline");
+                return;
             }
             user = LoginState.loggedInUser;
+            twits = (await MessageService.GetAllPrivateTwits(user.username)).ToList();
+            foreach (var twit in twits)
+            {
+                twit.user = user;
+            }
+            //twits = new List<Message>();
+            isLoading = false;
+            StateHasChanged();
         }
 
         protected async void OnShareTwit()
         {
-            showShareSuccesfulMessage = true;
-            var demoTwit1 = new Message();
-            demoTwit1.pub_date = DateTime.Now;
-            var user = new User();
-            user.username = "Harpa";
-            demoTwit1.user = user;
-            demoTwit1.text = "some twit";
+            isLoading = true;
+            StateHasChanged();
 
-            twits.Add(demoTwit1);
+            Stringwrapper currentTwit = new Stringwrapper();
+            currentTwit.content = twit.text;
+            bool result = (await MessageService.CreateATwit(currentTwit, user.username));
+            if (result)
+            {
+                showShareSuccesfulMessage = true;
+                twits = (await MessageService.GetAllPrivateTwits(user.username)).ToList();
+                foreach (var twit in twits)
+                {
+                    twit.user = user;
+                }
+                twit = new Message();
+            }
+            else
+            {
+                showShareSuccesfulMessage = false;
+            }
+
+            isLoading = false;
             StateHasChanged();
             await Task.CompletedTask;
         }
@@ -51,30 +77,7 @@ namespace MinitwitFrontend.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            //var response = await _httpClient.PostAsJsonAsync<userDto>("usertwits", userObject);
-
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    isAuthenticated = true;
-            //}
-            //else
-            //{
-            //    isAuthenticated = false;
-
-            //}
-
-            showShareSuccesfulMessage = false;
-            //fake list remove later
-            twits = new List<Message>();
-            var demoTwit1 = new Message();
-            demoTwit1.pub_date = DateTime.Now;
-            var user = new User();
-            user.username = "Harpa";
-            demoTwit1.user = user;
-            demoTwit1.text = "some twit";
-
-            twits.Add(demoTwit1);
-
+            
         }
     }
 }
