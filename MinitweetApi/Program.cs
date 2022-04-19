@@ -32,7 +32,7 @@ builder.Services.AddCors(o =>
 
         // builder.AllowCredentials();
         // builder.SetIsOriginAllowed(origin => true);
-        builder.WithOrigins("http://localhost:5000", "http://68.183.67.47:5000")
+        builder.WithOrigins("http://localhost:5000", "http://164.92.132.67:5000")
         .AllowAnyHeader()
         .AllowAnyMethod();
         // builder.AllowAnyMethod();
