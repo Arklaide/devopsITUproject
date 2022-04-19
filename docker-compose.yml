@@ -1,5 +1,9 @@
 version: "3.4"
 
+networks:
+  minitwitnetwork:
+    driver: overlay
+
 services:
   minitweetapi:
     image: minitweetapi
