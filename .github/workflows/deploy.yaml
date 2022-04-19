@@ -106,4 +106,4 @@ jobs:
           host: "164.92.132.67"
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSHKEY }}
-          script: docker stack deploy --compose-file docker-compose.production.yml minitwitswarm
+          script: docker stack deploy --compose-file docker-compose.production.yml --with-registry-auth minitwitswarm
