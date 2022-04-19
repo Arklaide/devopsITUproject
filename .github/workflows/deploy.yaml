@@ -70,7 +70,7 @@ jobs:
           context: "{{defaultContext}}:MinitwitFrontend/MinitwitFrontend"
           push: true
           tags: registry.digitalocean.com/devopsitu/minitwitfrontend:latest
-      - name: copy docker-compose.yml via ssh password
+      - name: copy docker-compose.production.yml
         uses: appleboy/scp-action@master
         with:
           host: "164.92.132.67"
@@ -100,10 +100,10 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSHKEY }}
           script: docker-compose -f docker-compose.production.yml down
-      - name: Docker-compose up
+      - name: Docker stack deploy
         uses: appleboy/ssh-action@master
         with:
           host: "164.92.132.67"
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSHKEY }}
-          script: docker stack deploy --compose-file docker-compose.production.yml --env-file .env minitwitswarm
+          script: docker stack deploy --compose-file docker-compose.production.yml minitwitswarm
