@@ -31,7 +31,7 @@ namespace MinitwitFrontend
                 }
                 else
                 {
-                    c.BaseAddress = new Uri("http://68.183.67.47:8000");
+                    c.BaseAddress = new Uri("http://164.92.132.67:8000");
                 }
             });
             builder.Services.AddSingleton<LoginState>();
