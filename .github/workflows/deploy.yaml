@@ -75,7 +75,7 @@ jobs:
         with:
           host: "164.92.132.67"
           username: ${{ secrets.USERNAME }}
-          password: ${{ secrets.PASSWORD }}
+          key: ${{ secrets.SSHKEY }}
           source: "docker-compose.production.yml"
           target: "/root"
       - name: copy prometheus file
