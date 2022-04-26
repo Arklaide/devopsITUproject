@@ -5,18 +5,19 @@ on:
       - main
 jobs:
   dotnet_check:
-    runs-on: windows-latest 
-    - name: Checkout code
+    runs-on: windows-latest
+    steps:
+      - name: Checkout code
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-    - name: Setup .NET Core SDK 3.1.x
+      - name: Setup .NET Core SDK 3.1.x
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: 3.1.x
-    - name: Install dependencies
+      - name: Install dependencies
         run: dotnet restore
-    - name: Run .NET Code Analysis
+      - name: Run .NET Code Analysis
         uses: dotnet/code-analysis@main
         id: code-analysis
         with:
