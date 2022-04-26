@@ -14,7 +14,6 @@ services:
         monitor: 60s
         failure_action: rollback
         order: start-first
-    container_name: apicontainer
     env_file:
       - .env
     ports:
