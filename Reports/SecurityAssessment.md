@@ -73,6 +73,7 @@ The GitHub repository has Snyk enabled to run regularly security assessment chec
 Snyk has found the following issues:
 
 - CVE-2022-28391 - Affecting our Alpine busybox version for our Blazor app
+  - This is classified as a low risk, thus no action is needed
 - The package DotNetEnv@2.3.0 for our API uses some dependencies which are vulnerable
 - Some encoding seems vulnerable in our system
 
