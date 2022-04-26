@@ -4,7 +4,24 @@ on:
     branches:
       - main
 jobs:
-  build:
+  dotnet_check:
+    runs-on: windows-latest 
+    - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+    - name: Setup .NET Core SDK 3.1.x
+        uses: actions/setup-dotnet@v1.7.2
+        with:
+          dotnet-version: 3.1.x
+    - name: Install dependencies
+        run: dotnet restore
+    - name: Run .NET Code Analysis
+        uses: dotnet/code-analysis@main
+        id: code-analysis
+        with:
+          build-breaking: true
+  checks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -15,21 +32,12 @@ jobs:
         uses: actions/setup-dotnet@v1.7.2
         with:
           dotnet-version: 6.0.x
-      - name: Setup .NET Core SDK 3.1.x
-        uses: actions/setup-dotnet@v1.7.2
-        with:
-          dotnet-version: 3.1.x
       - name: Install dependencies
         run: dotnet restore
       - name: Build
         run: dotnet build --configuration Release --no-restore
       - name: Test
         run: dotnet test --no-restore --verbosity normal
-      - name: Run .NET Code Analysis
-        uses: dotnet/code-analysis@main
-        id: code-analysis
-        with:
-          build-breaking: true
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
       - name: Build a Docker image
