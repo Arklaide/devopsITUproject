@@ -7,6 +7,13 @@ networks:
 services:
   minitweetapi:
     image: registry.digitalocean.com/devopsitu/minitwitapi:latest
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        monitor: 60s
+        failure_action: rollback
+        order: start-first
     container_name: apicontainer
     env_file:
       - .env
@@ -17,6 +24,13 @@ services:
 
   minitwitfrontend:
     image: registry.digitalocean.com/devopsitu/minitwitfrontend:latest
+    deploy:
+      replicas: 2
+      update_config:
+        parallelism: 1
+        monitor: 60s
+        failure_action: rollback
+        order: start-first
     ports:
       - "5000:80"
     networks:
