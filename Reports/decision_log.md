@@ -26,7 +26,7 @@ We have started to implement monitoring using Prometheus following this guide: h
 
 We are refactoring the project in C#, since it is a reliable programming language with many useful features. It is a bit heavy compared to Python. But we also wanted to create a solid piece of software with best practice. This cost some extra work-hours than refactoring it to another lightweight language such as TypeScript.
 
-- Frontend: MVC-pattern .Net core 6. Reliable enterprise code and seperation of concerns using the MVC-pattern, great modalarization. (TENTATIVE)
+- Frontend: MVC-pattern .Net core 6. Reliable enterprise code and seperation of concerns using the MVC-pattern, great modalarization. To store the state of the logged in user we decided to go with a State file, called LoginState.cs, which the other classes inject. The state file contains important information about the authentication state such as, if there is someone authorized and if so which user it is. There is a private function in the LoginState.cs file that can update these informations and when they change, an action is called to notify all listeners of the OnAuthenticationChanged event. That is how all the files are notified if the authentication changes. To keep a clean structure we created a service layer in the frontend where we store all calls to the api in an organized way. We use HttpClient to do the actual http call. 
 - Backend: API using .Net and Entity Framework to provide a solid way to build am API when having a relational database storage.
 - Database: postgressql, since our product has relational data, they are all linked to users. It is very well-known and secure and can also be scaled with clusters and more.
 
