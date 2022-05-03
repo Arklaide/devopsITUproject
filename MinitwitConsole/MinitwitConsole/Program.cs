@@ -10,12 +10,14 @@ namespace MinitwitConsole
 
         static void Main(string[] args)
         {
+            DotNetEnv.Env.TraversePath().Load();
+
             string docStr = "ITU-Minitwit Tweet Flagging Tool\n\n Usage:\n  flag_tool <tweet_id>...\n flag_tool -i\n flag_tool -h\n Options:\n -h            Show this screen.\n -i            Dump all tweets and authors to STDOUT.\n";
 
             Console.WriteLine("Getting Connection ...");
 
-            var cs = "Server=db-postgresql-fra1-81861-do-user-10848725-0.b.db.ondigitalocean.com;Port=25060;Database=defaultdb;User Id=doadmin;Password=NXtS7RFWPWnqlcJX;Include Error Detail=true;";
-
+            var config = new ConfigurationBuilder().AddEnvironmentVariables().Build();
+            var cs = config.GetConnectionString("myDb1");
             using var con = new NpgsqlConnection(cs);
 
 
