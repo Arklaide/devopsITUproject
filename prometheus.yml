@@ -23,3 +23,7 @@ scrape_configs:
           - "tasks.minitweetapi"
         type: "A"
         port: 80
+
+  # - job_name: "itu-minitwit-api"
+  #   static_configs:
+  #     - targets: ["minitwitswarm-minitweetapi:80"]
