@@ -19,6 +19,7 @@ We have started to implement monitoring using Prometheus following this guide: h
 - We have added units tests to the CI to detects errors before they are released (TODO)
 - We have made sure that the docker container will not shutdown, but it will update to avoid downtime of the service (TODO)
 - Our GitHub actions are configured to deploy our docker container to digital ocean everytime there is a commit to main
+- Our swarm uses the default ingress routing load balancer as we have not set up an addiotional one
 
 ## REFACTORING DECISION - UPDATE 2022-02-15
 

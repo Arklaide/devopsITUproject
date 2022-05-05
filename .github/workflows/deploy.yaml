@@ -102,13 +102,6 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSHKEY }}
           script: docker-compose -f docker-compose.production.yml pull
-      - name: Docker compose down
-        uses: appleboy/ssh-action@master
-        with:
-          host: "164.92.132.67"
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSHKEY }}
-          script: docker-compose -f docker-compose.production.yml down
       - name: Docker stack deploy
         uses: appleboy/ssh-action@master
         with:
