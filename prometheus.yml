@@ -16,7 +16,7 @@ scrape_configs:
       # localhost is not it, as that is w/in the container :)
       - targets: ["prometheus:9090"]
 
-  - job_name: "itu-minitwit"
+  - job_name: "itu-minitwit-api"
     metrics_path: "/metrics"
     dns_sd_configs:
       - names:
