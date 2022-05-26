@@ -24,4 +24,4 @@ jobs:
           message: 'publish report.pdf'
           force: 'true'
           directory: ./report
-          author_email: hampuswadum@hotmail.com 
+          author_email: dant@itu.dk 
