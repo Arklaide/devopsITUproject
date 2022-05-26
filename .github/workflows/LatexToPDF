@@ -27,5 +27,5 @@ jobs:
           branch: 'main'
           message: 'publish report.pdf'
           force: 'true'
-          directory: ./report
+          directory: ./report/build
           author_email: daniel@skovduevej.dk 
