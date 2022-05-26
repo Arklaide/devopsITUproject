@@ -15,7 +15,7 @@ jobs:
         uses: thomas-chauvet/latex2pdf-action@1.0.4
         with:
           output_dir: report/build
-          main_latex_file: main.tex
+          main_latex_file: report/main.tex
 
       - name: Commit & Push changes
         uses: actions-js/push@master
