@@ -11,7 +11,6 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: report/main.tex
-          working_directory: ./report
 
       - name: Commit & Push changes
         uses: actions-js/push@master
