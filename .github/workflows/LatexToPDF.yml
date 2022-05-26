@@ -18,7 +18,6 @@ jobs:
         uses: xu-cheng/latex-action@v2
         with:
           root_file: report/main.tex
-          args: -pdf -jobname=report/report
 
       - name: Commit & Push changes
         uses: actions-js/push@master
