@@ -8,9 +8,11 @@ jobs:
       - name: Set up Git repository
         uses: actions/checkout@v2
       - name: Compile LaTeX document
-        uses: xu-cheng/latex-action@v2
+        uses: xu-cheng/texlive-action/full@v1
         with:
-          root_file: report/main.tex
+          run: |
+            cd ./report
+            pdflatex -output-directory build main.tex 
 
       - name: Commit & Push changes
         uses: actions-js/push@master
