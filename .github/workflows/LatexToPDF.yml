@@ -23,4 +23,4 @@ jobs:
           git config user.email "<>"
           git add report/build/main.pdf
           git commit -m "Generated PDF"
-          git push
+          git push origin HEAD:main
