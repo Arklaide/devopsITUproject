@@ -169,15 +169,12 @@ The deployment view of the system can be seen in Fig. \ref{fig:deloy}. The diffe
 \subsubsection{Frontend}
 \label{frontenddisc}
 
-For the frontend we use Model-view-controller (MVC)-pattern (.Net Core 5) with Blazor. 
+The frontend follows the model-view-controller pattern and uses .NET Core 5 with Blazor. 
 
-The reasons why we decided to go with C\#, Blazor and .Net MVC was based on the following factors:
+The reasons why we decided to go with Blazor is based on the following factors:
 \begin{enumerate}
-\item C\# is a popular language with a lot of support for different frameworks
-\item C\# has a good IDE (Visual Studio)
-\item Blazor is quite new and exciting
-\item Develop interactive browser based UI using C\# instead of JavaScript
-\item Blazor is both open source and free.
+\item The MVC pattern mixed with Blazor was chosen for the developers to easier understand the frontend setup as the API is structured mostly the same, without any views of course.
+\item It is convenient to use the same language pack for both the frontend and API
 \item Simple routing, httpClient and Dependency Injection
 \end{enumerate}
 
@@ -185,15 +182,14 @@ To store the state of the logged in user we decided to go with a State class, wh
 
 To keep a clean structure we created a service layer where we store all calls to the API in an organized way. We use HttpClient to do the actual http call. 
 
-The complete code can be seen here: \href{https://github.com/Arklaide/devopsITUproject/tree/main/MinitwitFrontend/MinitwitFrontend}{\textit{Frontend code}}
-
 \subsubsection{API}
 \label{apidisc}
-We have chosen to do the API using ASP.NET Web APIs. There are several reasons for why we chose this stack and here are some of them:
+We have chosen to do the API using ASP.NET core 6 using controllers and the repository pattern. There are several reasons for why we chose this stack:
 \begin{enumerate}
     \item Endpoints are automatically serialized to properly formatted JSON, which is being used in our frontend, aswell as the simulator.
     \item URl-Routing is done inline easily, as well as query parameters and request bodies are automatically bound to method parameters
     \item Logging of database interactions are automatically added. When we setup the ELK-stack, we have to only do minor additions to have meaningful logging in our entire application.
+    \item Entity Framework Core makes it easy to communicate with our database and is base for the repository architectural pattern choice.
 \end{enumerate}
 \subsection{Dependencies}
 The direct dependencies of the API and frontend are visualized as a graph in Fig. \ref{fig:depgrapg}. The graph shows us that the API has 16 dependencies and the frontend has 7.
@@ -204,11 +200,11 @@ The direct dependencies of the API and frontend are visualized as a graph in Fig
   \label{fig:depgrapg}
 \end{figure}
 
-There are multiple other dependencies of the project, we depend on multiple GitHub action in our workflows, such as SSH and checking code out. There are also dependencies in our docker images, such as nginx:alpine for the frontend image. Furthermore, our server other than standard Ubuntu dependencies, have docker.io \& doctl as dependencies. Lastly, we depend on Terraform for infrastructure as code. An overview can be seen in Fig. \ref{fig:otherdep}.
+There are multiple other dependencies of the project, we depend on multiple GitHub actions in our workflows, such as SSH and checking code out. There are also dependencies in our docker images, such as nginx:alpine for the frontend image. Furthermore, our server other than standard Ubuntu dependencies, have docker.io \& doctl as dependencies. Lastly, we depend on Terraform for infrastructure as code. An overview can be seen in Fig. \ref{fig:otherdep}.
 
 \begin{figure} [H]
   \centering
-  \includegraphics[width=0.8\textwidth]{images/devops-otherdependencies.png}
+  \includegraphics[width=0.7\textwidth]{images/devops-otherdependencies.png}
   \caption{Other dependencies overview}
   \label{fig:otherdep}
 \end{figure}
@@ -236,27 +232,22 @@ The state as analyzed by Better Code Hub can be seen in Fig. \ref{fig:bch}, it s
 
 
 \subsection{Licenses}
-Licences can be tricky and easy to ignore. We are using is a MIT license which is a free and open source license. That means it allows you to use, copy, modify and distribute the code, for both private and commercial use. All of our direct dependencies are using either MIT or Apache 2.0, which are both free and open source licenses. That makes our license compatible with all of our direct dependencies. \par
-A typical software project often uses a lot of third-party packages so it can not always be easy to find all the licences. A tool which helped us to identify licenses is  \textbf{ScanCode}. However, due to issues with the report we were unable to identify all licenses thus we had to check all direct packages manually. 
+We are using a MIT license which is a permissive, free, and open source license. All of our direct dependencies are using either MIT or Apache 2.0, which are both permissive licenses. That makes our MIT license compatible with all of our direct dependencies. \par
+A typical software project often uses a lot of third-party packages so it can not always be easy to find all the licences. A tool which helped us to identify licenses is  \textbf{ScanCode}. However, due to issues with the output we were unable to identify all licenses thus we had to check all direct packages manually. 
 
 \section{Process' perspective}
 % Add general stuff think 3ways (+ contributions?)
 % https://github.com/Arklaide/devopsITUproject/blob/main/report/sub-reports/ThreeWays.md
 %How do you interact as developers?
 %How is the team organized?
-We have aimed to adhere to the "Three Ways" as described in "The DevOps HandBook\cite{kim2021devops}. 
+We have aimed to adhere to the "Three Ways" as described in "The DevOps HandBook\cite{kim2021devops}. A summary of our use of the three ways is described below, the initial internal notes concerning it can be found on our \href{https://github.com/Arklaide/devopsITUproject/blob/main/report/sub-reports/ThreeWays.md}{GitHub repository}.
 \begin{itemize}
-    \item \textbf{Flow:} A key task have been to simplify release to production in order to accommodate hot fixes and avoid big bang releases. We have a main branch for production and a develop branch for development/testing. Publishing to production narrows down to a pull request from develop to main that then triggers a CI/CD pipeline. The CI/CD pipeline does Environment creation, testing and code deployment. Furthermore, we keep track of our development process by using a Kanban board with columns representing the state of our issues. More details on the board in section \ref{Development_process}
-    \item\textbf{Feedback and continual experimentation: }Prior to this group work we spend some time adjusting expectations and making sure that we each accommodate each other strengths and weaknesses. This is an important step to ensure mutual trust and a safe working environment where you are allowed to share failures, successes and ask for help. Openness provides a culture in which we all learn continuously and share experiences. Furthermore, we focus on continuously doing code reviews along with fast deployments allows us to secure and maintain good software quality.
+    \item \textbf{Flow:} A key task have been to simplify release to production in order to accommodate hot fixes and avoid big bang releases. We have a main branch for production and a develop branch for development/testing. Publishing to production narrows down to a pull request from develop to main that then triggers a deployment. The CI/CD pipeline is visualized in section \ref{cicdchain}. Furthermore, we keep track of our development process by using a Kanban board with columns representing the state of our issues. More details on the board in section \ref{Development_process}
+    \item\textbf{Feedback and continual experimentation: }In the kickoff phase of the project we spend some time adjusting expectations and making sure that we each accommodate each other strengths and weaknesses. This is an important step to ensure mutual trust and a safe working environment where you are allowed to share failures, successes and ask for help. Openness provides a culture in which we all learn continuously and share experiences. Furthermore, we focus on continuously doing code reviews along with fast deployments allows us to secure and maintain good software quality.
 \end{itemize}
-\\
-\\
-
-
 %(basically a summary from these two files:%
 %https://github.com/Arklaide/devopsITUproject/blob/main/report/sub-reports/ThreeWays.md%
 %https://github.com/Arklaide/devopsITUproject/blob/main/report/sub-reports/contributions.md%
-
 \subsection{Repository \& Branching strategy}
 We chose to version control all our code as a mono-repository on GitHub. The repository can be viewed here: \href{https://github.com/Arklaide/devopsITUproject}{DevopsITUproject}.
 There are two main folders/projects which has all the code that support our application:
@@ -300,8 +291,6 @@ To make sure that we have some consistency in our code before we push it to prod
     \item Code Climate
     \item Snyk vulnerability scanning
 \end{enumerate}
-\\
-\\
 Taking a look at our release activity for the different weeks as seen in Fig. \ref{fig:release_activity}, it is  pretty easy to spot when we decided to add the auto release into our pipeline.
 \begin{figure}[H]
     \centering
@@ -341,6 +330,7 @@ The overview can be seen in Fig. \ref{fig:Kanban}
     \label{fig:Kanban}
 \end{figure}
 \subsection{Flow of the CI/CD chain}
+\label{cicdchain}
 Fig. \ref{fig:flow} is a visualization of the entire process from a developers idea, to it being pushed to production.
 
 \begin{figure}[H]
@@ -398,8 +388,6 @@ These are metrics that can give valuable information for a server engineer, to s
     \caption{Technical metrics visualised from Grafana}
     \label{fig:monitoringtechnical}
 \end{figure}
-\\
-\\
 Some more metrics that can give some valuable insights into our sytem can be seen here \href{https://github.com/Arklaide/devopsITUproject/blob/main/report/sub-reports/METRICS.md}{\textit{Metrics}} 
 
 \subsection{Logging}
@@ -534,171 +522,6 @@ There are various artifacts of the system that could have an improved setup, the
 \section{Dependencies of the project}
 \label{depappendix}
 Below is a list of all the dependencies we are using in our project. Some of them have a strike-through which means we did not end up using them but they are currently still in our solution. One of the part of the maintenance phase is to get rid of dependencies that are not being used and we intend to do so in our solution as well.    
-\begin{itemize}
-    \item Frontend dependencies:
-    \begin{itemize}
-        \item Microsoft.AspNetCore.Components.WebAssembly:        
-        \\\\\textcolor{gray}{Description: Blazor Webassembly allows developers to create a SPA (single-page applications). }
-        \\\\\textcolor{gray}{License: MIT}
-        \item Microsoft.AspNetCore.Components.WebAssembly.Authentication:        
-        \\\\\textcolor{gray}{Description: Helps the app to authenticate users and optain tokens}
-        \\\\\textcolor{gray}{License: MIT}
-        \item Microsoft.AspNetCore.Components.WebAssembly.DevServer: 
-        \\\\\textcolor{gray}{Description: Server to use when building Blazor Applications}
-        \\\\\textcolor{gray}{License: MIT}
-         \textbf{\item Microsoft.Extensions.Http:}
-        \\\\\textcolor{gray}{Description: Used to configure HttpClient}
-        \\\\\textcolor{gray}{License: MIT}
-        \item \sout{Microsoft.VisualStudio.Azure.Containers.Tools.Targets:
-        \\\\\textcolor{gray}{Description: Enables Visual Studio Tooling for Docker file}
-        \\\\\textcolor{gray}{License: MICROSOFT SOFTWARE LICENSE TERMS}}
-        \item Newtonsoft.Json:
-        \\\\\textcolor{gray}{Description: Used to serialize/deserialize objects from C# to Json}
-        \\\\\textcolor{gray}{License: MIT}
-        \item System.Net.Http.Json:
-        \\\\\textcolor{gray}{Description: Provides methods for the HttpClient to serialize/deserialize without using System.Text.Json}
-        \\\\\textcolor{gray}{License: MIT}
-    \end{itemize}
-    \item Backend dependencies:
-    \begin{itemize}
-        \item DotNetEnv:
-        \\\textcolor{gray}{Description: .NET library to load environment files.}
-        \\\textcolor{gray}{License: MIT}
-        \item \sout{Mcrio.Configuration.Provider.Docker.Secrets \\
-        \\\textcolor{gray}{Description: Maps docker secrets files to .NET core configuration \footnote{https://github.com/mcrio/Configuration.Provider.Docker.Secrets}.} 
-        \\\textcolor{gray}{License: MIT}}
-        \item Microsoft.EntityFrameworkCore:
-        \\\textcolor{gray}{Description: A mapper from database to objects for .NET}
-        \\\textcolor{gray}{License: MIT}
-        \item Microsoft.EntityFrameworkCore.Design:
-        \\\textcolor{gray}{Description: Package containing all logic for EF-Core. }
-        \\\textcolor{gray}{License: MIT}
-        \item Microsoft.EntityFrameworkCore.SqlServer:
-        \\\textcolor{gray}{Description: Relational database management system.}
-        \\\textcolor{gray}{License: MIT}
-        \item Microsoft.EntityFrameworkCore.Tools:
-        \\\textcolor{gray}{Description: Manages database migrations through dbcontext}
-        \\\textcolor{gray}{License: MIT}
-        \item Microsoft.VisualStudio.Web.CodeGeneration.Design:
-        \\\textcolor{gray}{Description: Generates boilerplate code for web apis}
-        \\\textcolor{gray}{License: Apache-2.0 license}
-        \item Npgsql.EntityFrameworkCore.PostgreSQL
-6.0.3:
-        \\\textcolor{gray}{Description: Allows .NET to interact with PostgreSQL}
-        \\\textcolor{gray}{License: PostgreSQL license}
-        
-        \item prometheus-net.AspNetCore:
-        \\\textcolor{gray}{Description: Used for exporting metrics to Prometheus}
-        \\\textcolor{gray}{License: MIT License}
-        
-        \item Serilog.AspNetCore:
-        \\\textcolor{gray}{Description: Tool for logging}
-        \\\textcolor{gray}{License: Apache-2.0 license}
-        
-        \item Serilog.Enrichers.Environment:
-        \\\textcolor{gray}{Description: Tool for logging}
-        \\\textcolor{gray}{License: Apache-2.0 license}
-        
-        \item Serilog.Exceptions:
-        \\\textcolor{gray}{Description: Add on to Serilog for logging exceptions}
-        \\\textcolor{gray}{License: MIT License}
-        
-        \item Serilog.Sinks.Debug:
-        \\\textcolor{gray}{Description: For logging information to Visual Studios debug output window.}
-        \\\textcolor{gray}{License: Apache-2.0 license}
-        
-        \item Serilog.Sinks.Elasticsearch:
-        \\\textcolor{gray}{Description: A writer (sink) for the Serilog logging framework.}
-        \\\textcolor{gray}{License: Apache-2.0 license}
-        
-        \item Swashbuckle.AspNetCore:
-        \\\textcolor{gray}{Description: Swagger tool for APIs build with ASP.NET Core \footnote{https://github.com/domaindrivendev/Swashbuckle.AspNetCore} }
-        \\\textcolor{gray}{License: MIT license}
 
-
-
-    \end{itemize}
-      \item Build/release dependencies:
-    \begin{itemize}
-        \item actions/checkout
-        \\\textcolor{gray}{Description: Checks out your repository under \$GITHUB_WORKSPACE, so your workflow can access it. }
-        \\\textcolor{gray}{License: MIT License}
-        \item actions/create-release
-        \\\textcolor{gray}{Description: creates a GitHub release. }
-        \\\textcolor{gray}{License: MIT License}
-        \item actions/cache
-        \\\textcolor{gray}{Description: Attempts to restore a cache depending on the key you provide }
-        \\\textcolor{gray}{License: MIT License}
-        \item actions/setup-java
-        \\\textcolor{gray}{Description: Downloads and sets up a requested version of Java }
-        \\\textcolor{gray}{License: MIT License}
-        \item actions/setup-dotnet
-        \\\textcolor{gray}{Description: Downloads and sets up a requested version of Dotnet }
-        \\\textcolor{gray}{License: MIT License}
-        \item actions/scp-action
-        \\\textcolor{gray}{Description: Copies files and artifacts via SSH }
-        \\\textcolor{gray}{License: MIT License}
-        \item actions/ssh-action
-        \\\textcolor{gray}{Description: Executes remote ssh commands }
-        \\\textcolor{gray}{License: MIT License}
-        \item digitalocean/action-doctl
-        \\\textcolor{gray}{Description: Allows you to interact with all of your DigitalOcean resources. }
-        \\\textcolor{gray}{License: MIT License}
-        \item docker/build-push-action
-        \\\textcolor{gray}{Description: Builds and pushes Docker images with Buildx }
-        \\\textcolor{gray}{License: Apache-2.0 license}
-        \item docker/setup-buildx-action
-        \\\textcolor{gray}{Description: Creates and boots a builder that can be used in some steps of a workflow when using buildx }
-        \\\textcolor{gray}{License: Apache-2.0 license}
-        \item dotnet/code-analysis
-        \\\textcolor{gray}{Description: runs the .NET code quality ("CAxxxx") and code style analyzers("IDExxxx")  }
-        \\\textcolor{gray}{License: MIT License}
-        \item github/super-linter
-        \\\textcolor{gray}{Description: Runs the Super-Linter, which is a simple combination of various linters. }
-        \\\textcolor{gray}{License: MIT License}
-        \item snyk/actions/docker
-        \\\textcolor{gray}{Description: Uses Snyk to check for vulnerabilities in GitHub projects}
-        \\\textcolor{gray}{License: Apache-2.0 license}
-        
-        
-    \end{itemize}
-    
-    \item API Testing:
-    \begin{itemize}
-        \item coverlet.collector
-        \\\textcolor{gray}{Description: Code Coverage library with support for line, branch and method coverage }
-        \\\textcolor{gray}{License: MIT License}
-        \item Microsoft.EntityFrameworkCore.InMemory
-        \\\textcolor{gray}{Description: In-memory database provider for Entity Framework Core}
-        \\\textcolor{gray}{License: MIT License}
-        \item Microsoft.NET.Test.Sdk
-        \\\textcolor{gray}{Description: To build .NET test projects}
-        \\\textcolor{gray}{License: MIT License}
-        \item xUnit
-        \\\textcolor{gray}{Description: Unit testing tool for the .NET Framework}
-        \\\textcolor{gray}{License: Apache-2.0 license}
-         \item xunit.runner.visualstudio
-        \\\textcolor{gray}{Description: Required to run the test project inside Visual Studio as well as with dotnet test}
-        \\\textcolor{gray}{License: Apache-2.0 license}
-    \end{itemize}
-
-    \item Ubuntu servers/machines:
-    \begin{itemize}
-        \item Docker.io
-        \\\textcolor{gray}{Description: Docker is a containerization platform which enables applications to packed as containers}
-        \item Doctl
-        \\\textcolor{gray}{Description: Command line interface for the Digital Ocean API in order to allow communication with our container registry}
-        \item Terraform
-        \\\textcolor{gray}{Description: Infrastructure as Code (used on local machines)}
-    \end{itemize}
-    
-    \item Docker images:
-    \begin{itemize}
-        \item mcr.microsoft.com/dotnet/sdk:6.0 \& 5.0
-        \item mcr.microsoft.com/dotnet/aspnet:6.0 \& 5.0
-        \item nginx:alpine
-    \end{itemize}
-
-\end{itemize}
 
 \end{document}
