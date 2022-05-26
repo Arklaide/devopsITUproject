@@ -21,8 +21,6 @@ jobs:
         run: |
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-          rm -f report/build/main.pdf
-          cp report/main.pdf report/build/main.pdf
           git add report/build/main.pdf
           git commit -m "Generated PDF"
           git push
