@@ -88,7 +88,7 @@ angle=0,
             
         \vspace{0.8cm}
             
-        \includegraphics[width=0.4\textwidth]{images/ITU_logo_UK jpg.jpg}
+        \includegraphics[width=0.4\textwidth]{images/ITU_logo_UK.jpg}
             
         \Large
         Department of Computer Science\\
@@ -202,6 +202,15 @@ The direct dependencies of the API and frontend are visualized as a graph in Fig
   \includegraphics[width=0.9\textwidth]{images/dependencygraph.png}
   \caption{Dependency Graph}
   \label{fig:depgrapg}
+\end{figure}
+
+There are multiple other dependencies of the project, we depend on multiple GitHub action in our workflows, such as SSH and checking code out. There are also dependencies in our docker images, such as nginx:alpine for the frontend image. Furthermore, our server other than standard Ubuntu dependencies, have docker.io \& doctl as dependencies. Lastly, we depend on Terraform for infrastructure as code. An overview can be seen in Fig. \ref{fig:otherdep}.
+
+\begin{figure} [H]
+  \centering
+  \includegraphics[width=0.8\textwidth]{images/devops-otherdependencies.png}
+  \caption{Other dependencies overview}
+  \label{fig:otherdep}
 \end{figure}
 
 An extensive list of all direct dependencies of this project, their name, description, and license can be found in appendix \ref{depappendix}.
