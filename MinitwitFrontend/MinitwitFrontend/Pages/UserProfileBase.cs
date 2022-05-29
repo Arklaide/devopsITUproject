@@ -97,6 +97,12 @@ namespace MinitwitFrontend.Pages
         {
             NavigationManager.NavigateTo($"/user-timeline/{userId}");
         }
+        protected string GetImageSource()
+        {
+            Random r = new Random();
+            int x = r.Next(5);//Max range
+            return "images/" + x.ToString() + ".png";
+        }
 
     }
 }

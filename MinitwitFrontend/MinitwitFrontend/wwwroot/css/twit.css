@@ -9,9 +9,9 @@
     flex-direction: row;
     align-items: center;
     justify-content: flex-start;
+    margin-bottom: 20px;
 }
 .twit-container .twit-pic-container {
-    background-color: yellow;
     height: 80px;
     width: 80px;
     margin-right: 20px;
