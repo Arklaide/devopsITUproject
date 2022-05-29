@@ -35,7 +35,7 @@ For each assets there are multiple threat sources and risk scenarios associated,
 
 ### Risk Analysis
 
-We use the likelihood and impact definitions as defined by TODO: insert security book ref. The risk is found by looking at the likelihood and impact matrix as defined below:
+We use the likelihood and impact definitions as defined by Basin et al.\[1\] The risk is found by looking at the likelihood and impact matrix as defined below:
 | Risk level | | | |
 |---|---|---|---|
 | Likelihood | | Impact |  
@@ -107,3 +107,6 @@ The results calls for the following actions to take place as soon as possible:
 ## Status of logging and monitoring
 
 OWASP includes insufficient logging and monitoring as a security risk. The current state of our logging is acceptable, since it is possible to manual see some results from the penetration test, such as tools trying to access config sub-sites. However, nothing is automatic. Furthermore, the monitoring does not give much information, other than a few technical and business related metrics, such as numbers of logins. The security issue concerning risk no 6 that was found, can't be seen with the current logging/monitoring.
+
+## References
+\[1\] Basin, D., Schaller, P., & Schläpfer, M. (2011). Applied information security: a hands-on approach (chap. 8). Heidelberg: Springer.
